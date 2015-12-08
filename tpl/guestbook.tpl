@@ -1,0 +1,129 @@
+<section class="content container">
+  <div class="row">
+
+    <article class="content-text col-xs-12">
+      <h1>Отзывы</h1>
+      <h2>Мы дорожим мнением наших клиентов</h2>
+      <p>Гарантия от 100 дней на установленные комплектующие и исправленный дефект. В случае повторного поступления iPhone с дефектом, который устранялся ранее нашим сервисом, проводится диагностика, по результатам которой устанавливается причина дефекта/неисправности.</p>
+    </article><!-- /.content-text -->
+
+  </div>
+</section><!-- /.content -->
+
+<section class="reviews-page container">
+
+{% if (errors|length > 0) %}
+    {% for error in errors %}
+<div class="msge">{{error}}<br/></div>
+    {% endfor %}
+{% endif %}
+
+{% if (success|length > 0) %}
+    {% for succ in success %}
+<div class="msgi">{{succ}}<br/></div>
+    {% endfor %}
+{% endif %}
+
+  <div class="reviews-page-list row">
+
+{% if (total_count > 0) %}
+    {% for comment in comments %}
+    <div class="review col-xs-12 col-sm-6">
+      <div class="review-inner">
+        <div class="review-header">
+          <div class="person-photo"><img src="/uploads/images/review/ava1.png"> </div>
+          <div class="person-name">{{comment.name}}{{comment.secondname}}</div>
+          <div class="review-date">{{comment.date|date("d m Y")}}</div>
+          <div class="review-subject">Ремонтировали - {{comment.item}}</div>
+        </div>
+        <div class="review-caption"><p>{{comment.message}}</p></div>
+        {% if(global.user.id) and (global.user.status == '1') %}
+        <div class="review-caption"><p>{{comment.ip}} / <a href="{{comment.edit}}" target="_blank">Редактировать</a> / <a href="{{comment.del}}">Удалить</a></p></div>
+        {% endif %}
+        <div class="review-social">
+          <ul class="social-links social-links-default list-inline">
+            <li class="active"><a href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+            <li class="active"><a href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+            <li><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></li>
+            <li><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /.review -->
+    {% endfor %}
+{% endif %}
+
+  </div><!-- /.reviews-feed-list -->
+
+{% if(total_count > perpage) %}
+  <ul class="pagination">
+    {pages}
+  </ul>
+{% endif %}
+
+</section><!-- /.reviews-page -->
+
+{% if(use_guests) %}
+Гостям нельзя оставлять отзывы. Зарегистрируйтесь.
+{% else %}
+<form name="form" method="post" action="" class="review-form verifiable-form container">
+  <fieldset class="row">
+{% if(global.user.name) %}
+Ваш комментарий будет опубликован от имени <strong>{{global.user.name}}</strong>
+<input type="hidden" name="author" value="{{global.user.name}}"/>
+{% else %}
+    <div class="col-xs-12 col-sm-4 col-md-3">
+      <div class="form-group">
+        <label>Ваше имя</label>
+        <input type="text" class="form-control required" placeholder="{{placeholder.message}}" name="{{field.secondname}}" value="{{field.name}}">
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 col-md-3">
+      <div class="form-group">
+        <label>Ваша фамилия</label>
+        <input type="text" class="form-control required" placeholder="{{placeholder.message}}" name="{{field.secondname}}" value="{{field.secondname}}">
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
+      <div class="form-group">
+        <label>Что вы ремонтировали у нас</label>
+        <input type="text" class="form-control required" placeholder="{{placeholder.message}}" name="{{field.secondname}}" value="{{field.item}}">
+      </div>
+    </div>
+{% endif %}
+
+    <div class="col-xs-12 col-md-12">
+      <div class="form-group">
+        <label>Ваш отзыв</label>
+        <textarea name="content" id="content" class="form-control required" placeholder="{{placeholder.message}}">{{field.message}}</textarea>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-3 col-md-2">
+      <div class="form-group">
+        <button name="submit" type="submit" class="btn btn-danger">Отправить отзыв</button>
+        <input type="hidden" name="ip" value="{{ip}}"/>
+      </div>
+    </div>
+
+    <div class="social-links-wrap col-xs-12 col-sm-3 col-md-3 col-lg-2">
+      <ul class="social-links social-links-default list-inline">
+        <li><a href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+        <li><a href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+        <li><a href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
+        <li><a href="#"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
+      </ul>
+    </div>
+
+    <div class="form-caption col-xs-12 col-md-7">
+      <p>Прикрепите свой профиль в социальной сети, сделайте отзыв более убедительным!<br>
+      <span class="text-muted">Просто нажмите на иконку соцсети которую хотите прикрепить</span></p>
+    </div>
+
+    {% if(use_captcha) %}{{captcha}}{% endif %}
+
+  </fieldset>
+</form>
+{% endif %}
