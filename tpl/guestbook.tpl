@@ -27,6 +27,7 @@
   <div class="reviews-page-list row">
 
 {% if (total_count > 0) %}
+
     {% for comment in comments %}
     <div class="review col-xs-12 col-sm-6">
       <div class="review-inner">
@@ -35,6 +36,11 @@
           <div class="person-name">{{comment.name}}{{comment.secondname}}</div>
           <div class="review-date">{{comment.date|date("d m Y")}}</div>
           <div class="review-subject">Ремонтировали - {{comment.item}}</div>
+          <!-- begin fields -->
+          {% for field in comment.fields %}
+            {% if field.value %}<div class="person-name">{{ field.name }} - {{ field.value }}</div>{% endif %}
+          {% endfor %}
+          <!-- end fields -->
         </div>
         <div class="review-caption"><p>{{comment.message}}</p></div>
         {% if(global.user.id) and (global.user.status == '1') %}
@@ -55,7 +61,7 @@
 
   </div><!-- /.reviews-feed-list -->
 
-{% if(total_count > perpage) %}
+{% if (total_count > perpage) %}
   <ul class="pagination">
     {pages}
   </ul>
@@ -93,6 +99,15 @@
       </div>
     </div>
 {% endif %}
+
+    {% for field in fields %}
+    <div class="col-xs-12 col-md-12">
+      <div class="form-group">
+        <label>{{ field.name }}</label>
+        <input type="text" id="{{ field.id }}" name="{{ field.id }}" class="form-control {% if field.required %}required{% endif %}" placeholder="{{ field.placeholder }}" value="{{ field.default_value }}" {% if field.required %}required{% endif %}>
+      </div>
+    </div>
+    {% endfor %}
 
     <div class="col-xs-12 col-md-12">
       <div class="form-group">
