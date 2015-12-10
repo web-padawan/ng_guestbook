@@ -1,4 +1,3 @@
-{{error}}
 <table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
 <form method="post" action="" name="form">
 <dl>
@@ -13,10 +12,12 @@
 <dt><label>Автор [*]</label></dt>
 <dd><input type="text" name="author" value="{{author}}"  /></dd>
 </dl>
+{% for field in fields %}
 <dl>
-<dt><label>Телефон [*]</label></dt>
-<dd><input type="text" name="phone" value="{{phone}}"  /></dd>
+<dt><label>{{ field.name }}</label></dt>
+<dd><input type="text" name="{{ field.id }}" value="{{ field.value }}" {% if field.required %}required{% endif %} /></dd>
 </dl>
+{% endfor %}
 <dl>
 <dt><label>Сообщение [*]</label></dt>
 <dd><textarea type="text"  name="message" rows=8 cols=100>{{message}}</textarea></dd>

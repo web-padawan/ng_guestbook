@@ -23,7 +23,7 @@ switch ($_REQUEST['action']) {
                           break;
   case 'show_messages'  : show_messages();
                           break;
-  case 'edit_message'   : edit_message();
+  case 'edit_message'   : $result = edit_message(); if ($result === TRUE) show_messages();
                           break;
   case 'modify'         : modify(); show_messages();
                           break;
@@ -371,38 +371,76 @@ global $tpl, $mysql, $lang, $twig;
 
   $id = intval($_REQUEST['id']);
 
+  // get fields
+  $fdata = $mysql->select("SELECT * FROM " . prefix . "_guestbook_fields");
+
   if (!empty($id))  {
-    $row = $mysql->record('SELECT * FROM '.prefix.'_guestbook WHERE id = '.db_squote($id).' LIMIT 1');
+    $row = $mysql->record('SELECT * FROM ' . prefix . '_guestbook WHERE id = ' . db_squote($id) . ' LIMIT 1');
 
     if (isset($_REQUEST['submit']))  {
+
+      $errors = array();
+
       $author = $_REQUEST['author'];
       $status = $_REQUEST['status'];
       $message = str_replace(array("\r\n", "\r"), "\n",convert($_REQUEST['message']));
       $answer = str_replace(array("\r\n", "\r"), "\n",convert($_REQUEST['answer']));
 
       if (empty($author) || empty($message) ) {
-        $error_text[] = 'Вы заполнили не все обязательные поля';
+        $errors[] = $lang['gbconfig']['msge_field_required'];
       }
 
-      if (empty($error_text)) {
-        $mysql->query('UPDATE ' . prefix . '_guestbook SET
-          message = ' . db_squote($message) . ',
-          answer = '  . db_squote($answer)  . ',
-          author = '  . db_squote($author)  . ',
-          status = '  . db_squote($status)  . '
-          WHERE id = \'' . intval($id) . '\' ');
+      $upd_rec = array(
+        'message' => db_squote($message),
+        'answer'  => db_squote($answer),
+        'author'  => db_squote($author),
+        'status'  => db_squote($status)
+      );
 
-        redirect_guestbook('?mod=extra-config&plugin=guestbook&action=show_messages');
+      foreach ($fdata as $fnum => $frow) {
+        if (!empty($_REQUEST[$frow['id']])) {
+          $upd_rec[$frow['id']] = db_squote($_REQUEST[$frow['id']]);
+        }
+        elseif (intval($frow['required']) === 1) {
+          $errors[] = $lang['gbconfig']['msge_field_required'];
+        }
+        else {
+          $upd_rec[$frow['id']] = '';
+        }
+      }
+
+      // prepare query
+      $upd_str = '';
+      $count = 0;
+      foreach ($upd_rec as $k => $v) {
+        $upd_str .= $k . '=' . $v;
+        $count++;
+        if ($count < count($upd_rec)) {
+          $upd_str .= ', ';
+        }
+      }
+
+      if (!count($errors)) {
+        $mysql->query('UPDATE ' . prefix . '_guestbook SET ' . $upd_str . ' WHERE id = \'' . intval($id) . '\' ');
+        msg(array("text" => $lang['gbconfig']['msgo_edit_success']));
+        return TRUE;
+      } else {
+        msg(array("type" => "error", "text" => implode($errors)));
       }
     }
 
-    if (!empty($error_text)) {
-      foreach($error_text as $error) {
-        $error_input .= msg(array("type" => "error", "text" => $error), 0, 2);
-      }
-    }
-    else {
-      $error_input ='';
+    // output fields data
+    $tFields = array();
+    foreach ($fdata as $fnum => $frow) {
+      $tField = array(
+        'id'              => $frow['id'],
+        'name'            => $frow['name'],
+        'placeholder'     => $frow['placeholder'],
+        'default_value'   => $frow['default_value'],
+        'required'        => intval($frow['required']),
+        'value'           => $row[$frow['id']]
+      );
+      $tFields[] = $tField;
     }
 
     $xt = $twig->loadTemplate($tpath['config/edit_message'].'config/edit_message.tpl');
@@ -417,7 +455,7 @@ global $tpl, $mysql, $lang, $twig;
       'status'    => $row['ip'],
       'ip'        => $row['ip'],
       'postdate'  => $row['postdate'],
-      'error'     => $error_input,
+      'fields'    => $tFields
     );
 
   } else {
@@ -434,7 +472,7 @@ global $tpl, $mysql, $lang, $twig;
     'status'    => $row['status'],
     'ip'        => $row['ip'],
     'postdate'  => $row['postdate'],
-    'error'     => $error_input,
+    'fields'    => $tFields
   );
 
   $xg = $twig->loadTemplate($tpath['config/main'].'config/main.tpl');
