@@ -217,7 +217,7 @@ function manage_fields() {
       'name'            => $fRow['name'],
       'placeholder'     => $fRow['placeholder'],
       'default_value'   => $fRow['default_value'],
-      'required'        => (intval($fRow['required']) === 1) ? $lang['gbconfig']['required_yes'] : $lang['gbconfig']['required_no'],
+      'required'        => intval($fRow['required'])
     );
     $tEntries[] = $tEntry;
   }

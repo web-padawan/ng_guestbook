@@ -5,12 +5,12 @@
 
   <table width="100%" border="0">
     <tr class="contHead" align="left">
-      <td width="10%">ID поля</td>
-      <td width="15%">Метка поля</td>
-      <td width="30%">Заполнитель</td>
-      <td width="30%">Значение по умолчанию</td>
-      <td width="10%">Обязательное?</td>
-      <td width="5%" colspan="2">Действия</td>
+      <td width="10%">{{ lang['gbconfig']['f_id'] }}</td>
+      <td width="15%">{{ lang['gbconfig']['f_name'] }}</td>
+      <td width="30%">{{ lang['gbconfig']['f_placeholder'] }}</td>
+      <td width="30%">{{ lang['gbconfig']['f_default_value'] }}</td>
+      <td width="10%">{{ lang['gbconfig']['f_required'] }}</td>
+      <td width="5%" colspan="2">{{ lang['gbconfig']['actions_title'] }}</td>
     </tr>
     {% for entry in entries %}
     <tr align="left" class="contRow1">
@@ -18,14 +18,14 @@
       <td>{{ entry.name }}</td>
       <td>{{ entry.placeholder }}</td>
       <td>{{ entry.default_value }}</td>
-      <td>{{ entry.required }}</td>
+      <td>{% if entry.required %}{{ lang['gbconfig']['f_required_yes'] }}{% else %}{{ lang['gbconfig']['f_required_no'] }}{% endif %}</td>
       <td nowrap>
-        <a href="?mod=extra-config&plugin=guestbook&action=edit_field&id={{ entry.id }}" title="Редактировать поле">
+        <a href="?mod=extra-config&plugin=guestbook&action=edit_field&id={{ entry.id }}" title="{{ lang['gbconfig']['actions_edit'] }}">
           <img src="{{ skins_url }}/images/add_edit.png" alt="EDIT" width="12" height="12" />
         </a>
       </td>
       <td nowrap>
-        <a onclick="return confirm('Вы действительно хотите удалить поле {{ entry.id }}?');" href="?mod=extra-config&plugin=guestbook&action=drop_field&id={{ entry.id }}" title="Удалить поле">
+        <a onclick="return confirm('{{ lang['gbconfig']['actions_confirm'] }} {{ entry.id }}?');" href="?mod=extra-config&plugin=guestbook&action=drop_field&id={{ entry.id }}" title="{{ lang['gbconfig']['actions_drop'] }}">
           <img src="{{ skins_url }}/images/delete.gif" alt="DEL" width="12" height="12" />
         </a>
       </td>
