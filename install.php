@@ -65,7 +65,7 @@ function plugin_guestbook_install($action) {
         'ecaptcha' => 1,
         'perpage' => '1',
         'order' => 'ASC',
-        'date' => 'j.m.Y - H:i',
+        'date' => 'j Q Y',
         'send_email' => '',
         'req_fields' => 'content,author',
         'approve_msg' => 1,

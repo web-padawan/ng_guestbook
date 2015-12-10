@@ -236,8 +236,14 @@ function guestbook_records($order, $start, $perpage) {
       );
     }
 
+    // set date format
+    $date_format = pluginGetVariable('guestbook', 'date');
+    if (empty($date_format)) {
+      $date_format = 'j Q Y';
+    }
+
     $comments[] = array(
-      'date'    => $row['postdate'],
+      'date'    => LangDate($date_format, $row['postdate']),
       'message' => $row['message'],
       'answer'  => $row['answer'],
       'author'  => $row['author'],

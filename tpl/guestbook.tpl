@@ -34,7 +34,7 @@
         <div class="review-header">
           <div class="person-photo"><img src="/uploads/images/review/ava1.png"> </div>
           <div class="person-name">{{comment.name}}{{comment.secondname}}</div>
-          <div class="review-date">{{comment.date|date("d m Y")}}</div>
+          <div class="review-date">{{ comment.date }}</div>
           <div class="review-subject">Ремонтировали - {{comment.item}}</div>
           <!-- begin fields -->
           {% for field in comment.fields %}
