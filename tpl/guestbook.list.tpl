@@ -70,7 +70,9 @@
 </section><!-- /.reviews-page -->
 
 {% if(use_guests) %}
-Гостям нельзя оставлять отзывы. Зарегистрируйтесь.
+<div class="container">
+  <div class="msgi alert alert-success">Гостям нельзя оставлять отзывы. Зарегистрируйтесь.</siv>
+</div>
 {% else %}
 <form name="form" method="post" action="{{ php_self }}?action=add" class="review-form verifiable-form container">
   <fieldset class="row">
