@@ -44,7 +44,7 @@
         </div>
         <div class="review-caption"><p>{{comment.message}}</p></div>
         {% if(global.user.id) and (global.user.status == '1') %}
-        <div class="review-caption"><p>{{comment.ip}} / <a href="{{comment.edit}}" target="_blank">Редактировать</a> / <a href="{{comment.del}}">Удалить</a></p></div>
+        <div class="review-caption"><p>{{comment.ip}} / <a href="{{comment.edit}}">Редактировать</a> / <a href="{{comment.del}}">Удалить</a></p></div>
         {% endif %}
         <div class="review-social">
           <ul class="social-links social-links-default list-inline">

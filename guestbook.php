@@ -184,6 +184,11 @@ function plugin_guestbook() {
     $tEntries[] = $tEntry;
   }
 
+  // Notify about `EDIT COMPLETE` if editComplete parameter is passed
+  if (isset($_REQUEST['editComplete']) && $_REQUEST['editComplete']) {
+    $success_add[] = $lang['guestbook']['success_edit'];
+  }
+
   $tVars = array(
     'comments'    => guestbook_records($order, $start, $perpage),
     'pages'       => generatePagination($page, 1, $PagesCount, 10, $paginationParams, $navigations),
@@ -258,26 +263,73 @@ function guestbook_records($order, $start, $perpage) {
   return $comments;
 }
 
-function plugin_guestbook_edit() {
+function plugin_guestbook_edit($mid) {
   global $template, $tpl, $userROW, $ip, $config, $mysql, $twig, $lang;
+
+  $id = (isset($_REQUEST['id'])) ? $_REQUEST['id'] : $mid;
+  if (empty($id)) return FALSE;
 
   $tpath = locatePluginTemplates(array('edit'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
   $xt = $twig->loadTemplate($tpath['edit'] . 'edit.tpl');
 
-  if(is_array($userROW) && $userROW['status'] == "1") {
+  // admin permission is required to edit messages
+  if (is_array($userROW) && $userROW['status'] == "1") {
 
+    // get fields
+    $fdata = $mysql->select("SELECT * FROM " . prefix . "_guestbook_fields");
+
+    // submit edit
     if (isSet($_REQUEST['go'])) {
-      $author = secure_html(convert(trim($_REQUEST['author'])));
-      $message = secure_html(convert(trim($_REQUEST['content'])));
-      $answer = secure_html(convert(trim($_REQUEST['answer'])));
-      $message = str_replace("\r\n", "<br />", $message);
+      $author   = secure_html(convert(trim($_REQUEST['author'])));
+      $message  = secure_html(convert(trim($_REQUEST['content'])));
+      $answer   = secure_html(convert(trim($_REQUEST['answer'])));
+      $message  = str_replace("\r\n", "<br />", $message);
 
-      $mysql->query("UPDATE " . prefix . "_guestbook SET author =" . db_squote($author) . ", message=" . db_squote($message) . ", answer=" . db_squote($answer) . " WHERE id=" . $_REQUEST['id']);
-         header("Location: ../");
+      if (empty($author) || empty($message) ) {
+        $errors[] = $lang['guestbook']['error_field_required'];
+      }
+
+      $upd_rec = array(
+        'message' => db_squote($message),
+        'answer'  => db_squote($answer),
+        'author'  => db_squote($author)
+      );
+
+      foreach ($fdata as $fnum => $frow) {
+        if (!empty($_REQUEST[$frow['id']])) {
+          $upd_rec[$frow['id']] = db_squote($_REQUEST[$frow['id']]);
+        }
+        elseif (intval($frow['required']) === 1) {
+          $errors[] = $lang['guestbook']['error_field_required'];
+        }
+        else {
+          $upd_rec[$frow['id']] = "''";
+        }
+      }
+
+      // prepare query
+      $upd_str = '';
+      $count = 0;
+      foreach ($upd_rec as $k => $v) {
+        $upd_str .= $k . '=' . $v;
+        $count++;
+        if ($count < count($upd_rec)) {
+          $upd_str .= ', ';
+        }
+      }
+
+      if (!count($errors)) {
+        $mysql->query('UPDATE ' . prefix . '_guestbook SET ' . $upd_str . ' WHERE id = \'' . intval($id) . '\' ');
+        @header("Location: " . generatePluginLink('guestbook', null, array(), array('editComplete' => 1)));
+        exit;
+      } else {
+        msg(array("type" => "error", "text" => implode($errors)));
+        return;
+      }
     }
     else {
 
-      if (!is_array($row = $mysql->record("SELECT * FROM " . prefix . "_guestbook WHERE id=" . db_squote(intval($_REQUEST['id']))))) {
+      if (!is_array($row = $mysql->record("SELECT * FROM " . prefix . "_guestbook WHERE id=" . db_squote(intval($id))))) {
         $tVars = array(
           'error'    =>  $lang['guestbook']['error_no_entry']
         );
@@ -287,12 +339,28 @@ function plugin_guestbook_edit() {
       }
 
       $row['message'] = str_replace("<br />", "\r\n", $row['message']);
-      $row['answer'] = str_replace("<br />", "\r\n", $row['answer']);
+      $row['answer']  = str_replace("<br />", "\r\n", $row['answer']);
+
+      // output fields data
+      $tFields = array();
+      foreach ($fdata as $fnum => $frow) {
+        $tField = array(
+          'id'              => $frow['id'],
+          'name'            => $frow['name'],
+          'placeholder'     => $frow['placeholder'],
+          'default_value'   => $frow['default_value'],
+          'required'        => intval($frow['required']),
+          'value'           => $row[$frow['id']]
+        );
+        $tFields[] = $tField;
+      }
+
       $tVars = array(
-        'author'    =>  $row['author'],
-        'answer'    =>  $row['answer'],
-        'message'   =>  $row['message'],
-        'id'        =>  $row['id'],
+        'author'    => $row['author'],
+        'answer'    => $row['answer'],
+        'message'   => $row['message'],
+        'id'        => $row['id'],
+        'fields'    => $tFields,
         'error'     => ''
       );
 
@@ -302,7 +370,7 @@ function plugin_guestbook_edit() {
   else {
 
     $tVars = array(
-        'error'    =>  $lang['guestbook']['error_no_permission']
+      'error'    =>  $lang['guestbook']['error_no_permission']
     );
 
     $template['vars']['mainblock'] = $xt->render($tVars);
