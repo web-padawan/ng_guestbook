@@ -364,11 +364,6 @@ function guestbook_edit() {
   $tpath = locatePluginTemplates(array('guestbook.edit'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
   $xt = $twig->loadTemplate($tpath['guestbook.edit'] . 'guestbook.edit.tpl');
 
-  // Error notification
-  if (isset($_REQUEST['error']) && $_REQUEST['error']) {
-    $error = $lang['guestbook']['error_field_required'];
-  }
-
   // admin permission is required to edit messages
   if (is_array($userROW) && $userROW['status'] == "1") {
 
@@ -400,6 +395,9 @@ function guestbook_edit() {
         );
         $tFields[] = $tField;
       }
+
+      // Error notification
+      $error = (isset($_REQUEST['error']) && $_REQUEST['error']) ? $lang['guestbook']['error_field_required'] : '';
 
       $tVars = array(
         'author'    => $row['author'],
