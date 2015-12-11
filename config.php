@@ -238,7 +238,7 @@ function manage_fields() {
 function show_options() {
   global $tpl, $mysql, $lang, $twig;
 
-  $tpath = locatePluginTemplates(array('config/main', 'config/general.from'), 'guestbook', 1);
+  $tpath = locatePluginTemplates(array('config/main', 'config/settings'), 'guestbook', 1);
 
   if (isset($_REQUEST['submit'])) {
     pluginSetVariable('guestbook', 'usmilies', secure_html($_REQUEST['usmilies']));
@@ -276,7 +276,7 @@ function show_options() {
   $approve_msg  = pluginGetVariable('guestbook', 'approve_msg');
   $admin_count  = pluginGetVariable('guestbook', 'admin_count');
 
-  $xt = $twig->loadTemplate($tpath['config/general.from'].'config/general.from.tpl');
+  $xt = $twig->loadTemplate($tpath['config/settings'].'config/settings.tpl');
 
   $tVars = array(
     'skins_url'    =>  skins_url,
