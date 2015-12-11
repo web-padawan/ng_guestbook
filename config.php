@@ -480,32 +480,41 @@ global $tpl, $mysql, $lang, $twig;
   print $xg->render($tVars);
 }
 
+/*
+ * Bulk operaions apply callback
+ */
 function modify() {
-global $mysql;
+  global $mysql, $lang;
 
   $selected_news = $_REQUEST['selected_message'];
-  $subaction  =  $_REQUEST['subaction'];
+  $subaction = $_REQUEST['subaction'];
 
-  $id = implode( ',', $selected_news );
-
-  if( empty($id) ) {
-    return msg(array("type" => "error", "text" => "Ошибка, вы не выбрали ни одного сообщения"));
+  if (empty($subaction)) {
+    return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
   }
 
-  switch($subaction) {
-    case 'mass_approve'      : $active = 'status = 1'; break;
-    case 'mass_forbidden'    : $active = 'status = 0'; break;
-    case 'mass_delete'       : $del = true; break;
+  switch ($subaction) {
+    case 'mass_approve'   : $active = 'status = 1'; $msg = $lang['gbconfig']['msgo_activated']; break;
+    case 'mass_forbidden' : $active = 'status = 0'; $msg = $lang['gbconfig']['msgo_deactivated']; break;
+    case 'mass_delete'    : $del = true; $msg = $lang['gbconfig']['msgo_deleted']; break;
+    default               : return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
   }
-  if(isset($active)) {
-    $mysql->query("update " . prefix . "_guestbook
-        set {$active}
-        WHERE id in ({$id})
-        ");
-    msg(array("type" => "info", "info" => "Сообщения с ID ${id} Активированы/Деактивированы"));
+
+  // get messages list
+  $id = implode(',', $selected_news);
+  if (empty($id)) {
+    return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_not_selected']));
   }
+
+  // change state
+  if (isset($active)) {
+    $mysql->query("UPDATE " . prefix . "_guestbook SET {$active} WHERE id IN ({$id})");
+  }
+
+  // delete
   if(isset($del)) {
-    $mysql->query("delete from " . prefix . "_guestbook where id in ({$id})");
-    msg(array("type" => "info", "info" => "Сообщения с ID ${id} удалены"));
+    $mysql->query("DELETE FROM " . prefix . "_guestbook WHERE id IN ({$id})");
   }
+
+  msg(array("type" => "info", "info" => sprintf($msg , $id)));
 }
