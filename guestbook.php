@@ -295,8 +295,8 @@ function guestbook_list() {
     'fields'      => $tEntries
   );
 
-  $tpath = locatePluginTemplates(array('guestbook'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
-  $xt = $twig->loadTemplate($tpath['guestbook'] . 'guestbook.tpl');
+  $tpath = locatePluginTemplates(array('guestbook.list'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
+  $xt = $twig->loadTemplate($tpath['guestbook.list'] . 'guestbook.list.tpl');
   $template['vars']['mainblock'] = $xt->render($tVars);
 }
 
@@ -361,8 +361,8 @@ function guestbook_edit() {
 
   $id = secure_html(convert(trim($_REQUEST['id'])));
 
-  $tpath = locatePluginTemplates(array('edit'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
-  $xt = $twig->loadTemplate($tpath['edit'] . 'edit.tpl');
+  $tpath = locatePluginTemplates(array('guestbook.edit'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
+  $xt = $twig->loadTemplate($tpath['guestbook.edit'] . 'guestbook.edit.tpl');
 
   // Error notification
   if (isset($_REQUEST['error']) && $_REQUEST['error']) {

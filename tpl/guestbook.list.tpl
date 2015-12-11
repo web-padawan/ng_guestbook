@@ -14,13 +14,13 @@
 
 {% if (errors|length > 0) %}
     {% for error in errors %}
-<div class="msge">{{error}}<br/></div>
+<div class="msge alert alert-error">{{error}}<br/></div>
     {% endfor %}
 {% endif %}
 
 {% if (success|length > 0) %}
     {% for succ in success %}
-<div class="msgi">{{succ}}<br/></div>
+<div class="msgi alert alert-success">{{succ}}<br/></div>
     {% endfor %}
 {% endif %}
 
