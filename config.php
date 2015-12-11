@@ -314,7 +314,7 @@ function show_options() {
 function show_messages() {
   global $tpl, $mysql, $lang, $twig, $config;
 
-  $tpath = locatePluginTemplates(array('config/main', 'config/show_messages'), 'guestbook', 1);
+  $tpath = locatePluginTemplates(array('config/main', 'config/messages_list'), 'guestbook', 1);
 
   $tVars = array();
 
@@ -344,7 +344,7 @@ function show_messages() {
     );
   }
 
-  $xt = $twig->loadTemplate($tpath['config/show_messages'] . 'config/show_messages.tpl');
+  $xt = $twig->loadTemplate($tpath['config/messages_list'] . 'config/messages_list.tpl');
 
   $tVars = array(
     'pagesss' => generateAdminPagelist( array('current' => $pageNo, 'count' => $countPages, 'url' => admin_url.'/admin.php?mod=extra-config&plugin=guestbook&action=show_messages&page=%page%')),
@@ -354,7 +354,7 @@ function show_messages() {
     'home'      =>  home,
   );
 
-  $xg = $twig->loadTemplate($tpath['config/main'].'config/main.tpl');
+  $xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
 
   $tVars = array(
     'entries' => $xt->render($tVars),
@@ -367,7 +367,7 @@ function show_messages() {
 function edit_message() {
 global $tpl, $mysql, $lang, $twig;
 
-  $tpath = locatePluginTemplates(array('config/main', 'config/edit_message'), 'guestbook', 1);
+  $tpath = locatePluginTemplates(array('config/main', 'config/messages_edit'), 'guestbook', 1);
 
   $id = intval($_REQUEST['id']);
 
@@ -443,7 +443,7 @@ global $tpl, $mysql, $lang, $twig;
       $tFields[] = $tField;
     }
 
-    $xt = $twig->loadTemplate($tpath['config/edit_message'].'config/edit_message.tpl');
+    $xt = $twig->loadTemplate($tpath['config/messages_edit'] . 'config/messages_edit.tpl');
 
     $tVars = array(
       'skins_url' => skins_url,
@@ -475,7 +475,7 @@ global $tpl, $mysql, $lang, $twig;
     'fields'    => $tFields
   );
 
-  $xg = $twig->loadTemplate($tpath['config/main'].'config/main.tpl');
+  $xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
 
   $tVars = array(
     'entries' => $xt->render($tVars),
