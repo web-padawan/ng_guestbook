@@ -72,7 +72,7 @@
 {% if(use_guests) %}
 Гостям нельзя оставлять отзывы. Зарегистрируйтесь.
 {% else %}
-<form name="form" method="post" action="" class="review-form verifiable-form container">
+<form name="form" method="post" action="{{ php_self }}?action=add" class="review-form verifiable-form container">
   <fieldset class="row">
 {% if(global.user.name) %}
 Ваш комментарий будет опубликован от имени <strong>{{global.user.name}}</strong>

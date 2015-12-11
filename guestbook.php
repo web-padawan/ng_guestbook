@@ -2,20 +2,21 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-register_plugin_page('guestbook','','plugin_guestbook');
-register_plugin_page('guestbook','edit','plugin_guestbook_edit');
+register_plugin_page('guestbook','','guestbook_list');
+register_plugin_page('guestbook','edit','guestbook_edit');
 LoadPluginLang('guestbook', 'main', '', '', '#');
 
-function plugin_guestbook() {
+switch ($_REQUEST['action']) {
+  case 'add'      : msg_add_submit();     break;
+  case 'edit'     : msg_edit_submit();    break;
+  case 'delete'   : msg_delete_submit();  break;
+}
+
+/*
+ * Add message submit callback
+ */
+function msg_add_submit() {
   global $template, $tpl, $twig, $userROW, $ip, $config, $mysql, $SYSTEM_FLAGS, $TemplateCache, $lang;
-
-  $SYSTEM_FLAGS['info']['title']['group'] = $lang['guestbook']['title'];
-
-  require_once(root . "/plugins/guestbook/lib/recaptchalib.php");
-  $publickey = pluginGetVariable('guestbook','public_key');
-  $privatekey = pluginGetVariable('guestbook','private_key');
-
-  if (isset($_POST['submit'])) {
 
     $req_fields = explode(",", pluginGetVariable('guestbook','req_fields'));
     $errors = array();
@@ -29,7 +30,7 @@ function plugin_guestbook() {
       // Check captcha
       if (pluginGetVariable('guestbook','ecaptcha')) {
 
-        $resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+        $resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 
         if (!$resp->is_valid) {
           // What happens when the CAPTCHA was entered incorrectly
@@ -129,19 +130,111 @@ function plugin_guestbook() {
       foreach ( $send_email_array as $email ) {
         sendEmailMessage($email, $mailSubject, $mailBody, $filename = false, $mail_from = false, $ctype = 'text/html');
       }
+      @header("Location: " . generatePluginLink('guestbook', null, array(), array('addSuccessful' => 1)));
+    }
 
-      @header("Refresh: 2; url=" . generatePluginLink('guestbook', null, array(), array(), false, true));
+}
+
+/*
+ * Edit message submit callback
+ */
+function msg_edit_submit() {
+  global $template, $tpl, $userROW, $ip, $config, $mysql, $twig, $lang;
+
+  $id       = secure_html(convert(trim($_REQUEST['id'])));
+  $author   = secure_html(convert(trim($_REQUEST['author'])));
+  $message  = secure_html(convert(trim($_REQUEST['content'])));
+  $answer   = secure_html(convert(trim($_REQUEST['answer'])));
+  $message  = str_replace("\r\n", "<br />", $message);
+
+  if (empty($author) || empty($message) ) {
+    $errors[] = $lang['guestbook']['error_field_required'];
+  }
+
+  // get fields
+  $fdata = $mysql->select("SELECT * FROM " . prefix . "_guestbook_fields");
+
+  $upd_rec = array(
+    'message' => db_squote($message),
+    'answer'  => db_squote($answer),
+    'author'  => db_squote($author)
+  );
+
+  // collect fields data
+  foreach ($fdata as $fnum => $frow) {
+    if (!empty($_REQUEST[$frow['id']])) {
+      $upd_rec[$frow['id']] = db_squote($_REQUEST[$frow['id']]);
+    }
+    elseif (intval($frow['required']) === 1) {
+      $errors[] = $lang['guestbook']['error_field_required'];
+    }
+    else {
+      $upd_rec[$frow['id']] = "''";
     }
   }
 
-  if ($_REQUEST['mode'] == 'del') {
-    if (is_array($userROW) && ($userROW['status'] == "1")) {
-      if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote(intval($_REQUEST['id']))))) {
-        $template['vars']['mainblock'] = $lang['guestbook']['error_entry_notfound'];
-        return;
-      }
-      $mysql->query("DELETE FROM " . prefix . "_guestbook WHERE id = " . intval($_REQUEST['id']));
+  // prepare query
+  $upd_str = '';
+  $count = 0;
+  foreach ($upd_rec as $k => $v) {
+    $upd_str .= $k . '=' . $v;
+    $count++;
+    if ($count < count($upd_rec)) {
+      $upd_str .= ', ';
     }
+  }
+
+  if (!count($errors)) {
+    $mysql->query('UPDATE ' . prefix . '_guestbook SET ' . $upd_str . ' WHERE id = \'' . intval($id) . '\' ');
+    @header("Location: " . generatePluginLink('guestbook', null, array(), array('editSuccessful' => 1)));
+  }
+  else {
+    @header("Location: " . generatePluginLink('guestbook', 'edit', array(), array('id' => $id, 'error' => 1)));
+    exit;
+  }
+}
+
+/*
+ * Delete message submit callback
+ */
+function msg_delete_submit() {
+  global $userROW, $mysql, $template, $lang;
+
+  if (is_array($userROW) && ($userROW['status'] == "1")) {
+    if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote(intval($_REQUEST['id']))))) {
+      $template['vars']['mainblock'] = $lang['guestbook']['error_entry_notfound'];
+      return;
+    }
+    $mysql->query("DELETE FROM " . prefix . "_guestbook WHERE id = " . intval($_REQUEST['id']));
+    @header("Location: " . generatePluginLink('guestbook', null, array(), array('deleteSuccessful' => 1)));
+  }
+}
+
+/*
+ * List messages page
+ */
+function guestbook_list() {
+  global $template, $tpl, $twig, $userROW, $ip, $config, $mysql, $SYSTEM_FLAGS, $TemplateCache, $lang;
+
+  $SYSTEM_FLAGS['info']['title']['group'] = $lang['guestbook']['title'];
+
+  require_once(root . "/plugins/guestbook/lib/recaptchalib.php");
+  $publickey = pluginGetVariable('guestbook','public_key');
+  $privatekey = pluginGetVariable('guestbook','private_key');
+
+  // ADD notication
+  if (isset($_REQUEST['addSuccessful']) && $_REQUEST['addSuccessful']) {
+    $success_add[] = $lang['guestbook']['success_add_wo_approve'];
+  }
+
+  // EDIT notication
+  if (isset($_REQUEST['editSuccessful']) && $_REQUEST['editSuccessful']) {
+    $success_add[] = $lang['guestbook']['success_edit'];
+  }
+
+  // DELETE notication
+  if (isset($_REQUEST['deleteSuccessful']) && $_REQUEST['deleteSuccessful']) {
+    $success_add[] = $lang['guestbook']['success_delete'];
   }
 
   // pagination
@@ -184,13 +277,8 @@ function plugin_guestbook() {
     $tEntries[] = $tEntry;
   }
 
-  // Notify about `EDIT COMPLETE` if editComplete parameter is passed
-  if (isset($_REQUEST['editComplete']) && $_REQUEST['editComplete']) {
-    $success_add[] = $lang['guestbook']['success_edit'];
-  }
-
   $tVars = array(
-    'comments'    => guestbook_records($order, $start, $perpage),
+    'comments'    => _guestbook_records($order, $start, $perpage),
     'pages'       => generatePagination($page, 1, $PagesCount, 10, $paginationParams, $navigations),
     'total_count' => $total_count,
     'perpage'     => $perpage,
@@ -212,8 +300,10 @@ function plugin_guestbook() {
   $template['vars']['mainblock'] = $xt->render($tVars);
 }
 
-
-function guestbook_records($order, $start, $perpage) {
+/*
+ * Records list helper
+ */
+function _guestbook_records($order, $start, $perpage) {
   global $mysql, $tpl, $userROW, $config, $parse;
 
   foreach ($mysql->select("SELECT * FROM ".prefix."_guestbook WHERE status = 1 ORDER BY id {$order} LIMIT {$start}, {$perpage}") as $row) {
@@ -221,7 +311,7 @@ function guestbook_records($order, $start, $perpage) {
     if (pluginGetVariable('guestbook','ubbcodes'))  { $row['message'] = $parse -> bbcodes($row['message']); }
 
     $editlink = generateLink('core', 'plugin', array('plugin' => 'guestbook', 'handler' => 'edit'), array('id' => $row['id']));
-    $dellink = generateLink('core', 'plugin', array('plugin' => 'guestbook'), array('mode' => 'del', 'id' => $row['id']));
+    $dellink = generateLink('core', 'plugin', array('plugin' => 'guestbook'), array('action' => 'delete', 'id' => $row['id']));
     $comnum++;
 
     // get fields
@@ -263,71 +353,27 @@ function guestbook_records($order, $start, $perpage) {
   return $comments;
 }
 
-function plugin_guestbook_edit($mid) {
+/*
+ * Edit message page
+ */
+function guestbook_edit() {
   global $template, $tpl, $userROW, $ip, $config, $mysql, $twig, $lang;
 
-  $id = (isset($_REQUEST['id'])) ? $_REQUEST['id'] : $mid;
-  if (empty($id)) return FALSE;
+  $id = secure_html(convert(trim($_REQUEST['id'])));
 
   $tpath = locatePluginTemplates(array('edit'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
   $xt = $twig->loadTemplate($tpath['edit'] . 'edit.tpl');
+
+  // Error notification
+  if (isset($_REQUEST['error']) && $_REQUEST['error']) {
+    $error = $lang['guestbook']['error_field_required'];
+  }
 
   // admin permission is required to edit messages
   if (is_array($userROW) && $userROW['status'] == "1") {
 
     // get fields
     $fdata = $mysql->select("SELECT * FROM " . prefix . "_guestbook_fields");
-
-    // submit edit
-    if (isSet($_REQUEST['go'])) {
-      $author   = secure_html(convert(trim($_REQUEST['author'])));
-      $message  = secure_html(convert(trim($_REQUEST['content'])));
-      $answer   = secure_html(convert(trim($_REQUEST['answer'])));
-      $message  = str_replace("\r\n", "<br />", $message);
-
-      if (empty($author) || empty($message) ) {
-        $errors[] = $lang['guestbook']['error_field_required'];
-      }
-
-      $upd_rec = array(
-        'message' => db_squote($message),
-        'answer'  => db_squote($answer),
-        'author'  => db_squote($author)
-      );
-
-      foreach ($fdata as $fnum => $frow) {
-        if (!empty($_REQUEST[$frow['id']])) {
-          $upd_rec[$frow['id']] = db_squote($_REQUEST[$frow['id']]);
-        }
-        elseif (intval($frow['required']) === 1) {
-          $errors[] = $lang['guestbook']['error_field_required'];
-        }
-        else {
-          $upd_rec[$frow['id']] = "''";
-        }
-      }
-
-      // prepare query
-      $upd_str = '';
-      $count = 0;
-      foreach ($upd_rec as $k => $v) {
-        $upd_str .= $k . '=' . $v;
-        $count++;
-        if ($count < count($upd_rec)) {
-          $upd_str .= ', ';
-        }
-      }
-
-      if (!count($errors)) {
-        $mysql->query('UPDATE ' . prefix . '_guestbook SET ' . $upd_str . ' WHERE id = \'' . intval($id) . '\' ');
-        @header("Location: " . generatePluginLink('guestbook', null, array(), array('editComplete' => 1)));
-        exit;
-      } else {
-        msg(array("type" => "error", "text" => implode($errors)));
-        return;
-      }
-    }
-    else {
 
       if (!is_array($row = $mysql->record("SELECT * FROM " . prefix . "_guestbook WHERE id=" . db_squote(intval($id))))) {
         $tVars = array(
@@ -361,11 +407,11 @@ function plugin_guestbook_edit($mid) {
         'message'   => $row['message'],
         'id'        => $row['id'],
         'fields'    => $tFields,
-        'error'     => ''
+        'error'     => $error
       );
 
       $template['vars']['mainblock'] = $xt->render($tVars);
-    }
+
   }
   else {
 
