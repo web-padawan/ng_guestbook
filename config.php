@@ -253,7 +253,6 @@ function show_options() {
     pluginSetVariable('guestbook', 'order', secure_html($_REQUEST['order']));
     pluginSetVariable('guestbook', 'date',  secure_html($_REQUEST['date']));
     pluginSetVariable('guestbook', 'send_email',  secure_html($_REQUEST['send_email']));
-    pluginSetVariable('guestbook', 'req_fields',  secure_html($_REQUEST['req_fields']));
     pluginSetVariable('guestbook', 'approve_msg',  secure_html($_REQUEST['approve_msg']));
 
     pluginSetVariable('guestbook', 'admin_count', intval($_REQUEST['admin_count']));
@@ -274,7 +273,6 @@ function show_options() {
   $order        = pluginGetVariable('guestbook', 'order');
   $date         = pluginGetVariable('guestbook', 'date');
   $send_email   = pluginGetVariable('guestbook', 'send_email');
-  $req_fields   = pluginGetVariable('guestbook', 'req_fields');
   $approve_msg  = pluginGetVariable('guestbook', 'approve_msg');
   $admin_count  = pluginGetVariable('guestbook', 'admin_count');
 
@@ -296,7 +294,6 @@ function show_options() {
     'order' => $order,
     'date' => $date,
     'send_email' => $send_email,
-    'req_fields' => $req_fields,
     'approve_msg' => $approve_msg,
     'admin_count' => $admin_count
   );

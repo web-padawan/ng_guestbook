@@ -91,11 +91,6 @@
 </tr>
 
 <tr>
-<td class="contentEntry1" valign=top>Обязательные поля для заполенения:<br /></td>
-<td class="contentEntry2" valign=top><input name="req_fields" type="text" size="100" value="{{req_fields}}" /></td>
-</tr>
-
-<tr>
 <td class="contentEntry1" valign=top>Разрешить добавлять без премодерации?<br /></td>
 <td class="contentEntry2" valign=top>
 <select name="approve_msg">

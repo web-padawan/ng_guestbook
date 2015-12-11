@@ -18,14 +18,15 @@ switch ($_REQUEST['action']) {
 function msg_add_submit() {
   global $template, $tpl, $twig, $userROW, $ip, $config, $mysql, $SYSTEM_FLAGS, $TemplateCache, $lang;
 
-    $req_fields = explode(",", pluginGetVariable('guestbook','req_fields'));
     $errors = array();
 
     // anonymous user
     if (!is_array($userROW)) {
 
       $_POST['author'] = secure_html(convert(trim($_POST['author'])));
-      if(!strlen($_POST['author']) && in_array("author", $req_fields)) $errors[] .= $lang['guestbook']['error_req_name'];
+      if(!strlen($_POST['author'])) {
+        $errors[] .= $lang['guestbook']['error_req_name'];
+      }
 
       // Check captcha
       if (pluginGetVariable('guestbook','ecaptcha')) {
@@ -52,15 +53,16 @@ function msg_add_submit() {
       $errors[] .= $lang['guestbook']['error_nolinks'];
     }
 
+    // check if message is not empty
+    if (!strlen(trim($_POST['content']))) {
+      $errors[] = $lang['guestbook']['error_req_text'] . ' ' . str_replace(array('{minl}', '{maxl}'), array($minl, $maxl), $lang['guestbook']['error_length_text']);
+    }
+
     // check message length
     $minl = pluginGetVariable('guestbook','minlength');
     $maxl = pluginGetVariable('guestbook','maxlength');
 
-    if (!strlen(trim($_POST['content'])) && in_array("content", $req_fields)) {
-      $errors[] = $lang['guestbook']['error_req_text'] . ' ' . str_replace(array('{minl}', '{maxl}'), array($minl, $maxl), $lang['guestbook']['error_length_text']);
-    }
-
-    if ((strlen($message) < $minl || strlen($message) > $maxl) && in_array("content", $req_fields)) {
+    if ((strlen($message) < $minl || strlen($message) > $maxl)) {
       $errors[] .= str_replace(array('{minl}', '{maxl}'), array($minl, $maxl), $lang['guestbook']['error_length_text']);
     }
 
