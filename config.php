@@ -259,8 +259,7 @@ function show_options() {
     pluginSetVariable('guestbook', 'admin_count', intval($_REQUEST['admin_count']));
 
     pluginsSaveConfig();
-
-    redirect_guestbook('?mod=extra-config&plugin=guestbook');
+    msg(array("text" => $lang['gbconfig']['msgo_settings_saved']));
   }
 
   $usmilies     = pluginGetVariable('guestbook', 'usmilies');
@@ -405,7 +404,7 @@ global $tpl, $mysql, $lang, $twig;
           $errors[] = $lang['gbconfig']['msge_field_required'];
         }
         else {
-          $upd_rec[$frow['id']] = '';
+          $upd_rec[$frow['id']] = "''";
         }
       }
 
@@ -511,14 +510,5 @@ global $mysql;
   if(isset($del)) {
     $mysql->query("delete from " . prefix . "_guestbook where id in ({$id})");
     msg(array("type" => "info", "info" => "Сообщения с ID ${id} удалены"));
-  }
-}
-
-function redirect_guestbook($url) {
-  if (headers_sent()) {
-    echo "<script>document.location.href='{$url}';</script>\n";
-  } else {
-    header('HTTP/1.1 302 Moved Permanently');
-    header("Location: {$url}");
   }
 }
