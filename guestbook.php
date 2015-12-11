@@ -78,8 +78,13 @@ function msg_add_submit() {
     $data = $mysql->select("select * from " . prefix . "_guestbook_fields");
     $fields = array();
 
+    $fmail = array();
     foreach ($data as $num => $value) {
       $fields[$value['id']] = intval($value['required']);
+      $fmail[] = array(
+        'name'  => $value['name'],
+        'value' => secure_html(convert(trim($_POST[$value['id']])))
+      );
     }
 
     $time = time() + ($config['date_adjust'] * 60);
@@ -94,6 +99,7 @@ function msg_add_submit() {
 
     foreach($fields as $fid => $freq) {
       if (!empty($_POST[$fid])) {
+        $_POST[$fid] = secure_html(convert(trim($_POST[$fid])));
         $new_rec[$fid] = db_squote($_POST[$fid]);
       }
       elseif ($freq === 1) {
@@ -119,10 +125,11 @@ function msg_add_submit() {
       $send_email = pluginGetVariable('guestbook','send_email');
 
       $tVars = array(
-        'time'  => $time,
-        'message'  => $message,
-        'author' => $author,
-        'ip' => $ip
+        'time'    => $time,
+        'message' => $message,
+        'author'  => $author,
+        'ip'      => $ip,
+        'fields'  => $fmail
       );
 
       $mailBody = $xt->render($tVars);
