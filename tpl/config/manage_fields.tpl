@@ -18,7 +18,7 @@
       <td>{{ entry.name }}</td>
       <td>{{ entry.placeholder }}</td>
       <td>{{ entry.default_value }}</td>
-      <td>{% if entry.required %}{{ lang['gbconfig']['f_required_yes'] }}{% else %}{{ lang['gbconfig']['f_required_no'] }}{% endif %}</td>
+      <td>{% if entry.required %}{{ lang['gbconfig']['settings_yes'] }}{% else %}{{ lang['gbconfig']['settings_no'] }}{% endif %}</td>
       <td nowrap>
         <a href="?mod=extra-config&plugin=guestbook&action=edit_field&id={{ entry.id }}" title="{{ lang['gbconfig']['actions_edit'] }}">
           <img src="{{ skins_url }}/images/add_edit.png" alt="EDIT" width="12" height="12" />
