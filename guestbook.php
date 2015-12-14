@@ -438,7 +438,7 @@ function guestbook_social() {
 
   session_start();
 
-  $adapters = array('vk', 'Facebook', 'Google');
+  $providers = array('Vkontakte', 'Facebook', 'Google');
 
   $auth_config = array(
     "base_url" => home . "/engine/plugins/guestbook/lib/hybridauth/",
@@ -464,50 +464,48 @@ function guestbook_social() {
     )
   );
 
-  require_once($_SERVER['DOCUMENT_ROOT'] . '/engine/plugins/guestbook/lib/hybridauth/Hybrid/Auth.php');
+  if (isset($_GET['provider']) && array_key_exists($_GET['provider'], $providers)) {
 
-  $hybridauth = new Hybrid_Auth($auth_config);
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/engine/plugins/guestbook/lib/hybridauth/Hybrid/Auth.php');
 
-  $adapter = $hybridauth->authenticate($_GET['provider']);
+    $hybridauth = new Hybrid_Auth($auth_config);
 
-  $user_profile = $adapter->getUserProfile();
+    $adapter = $hybridauth->authenticate($_GET['provider']);
 
-  $profile = $user_profile->profileURL;
-  $photo = $user_profile->photoURL;
+    $user_profile = $adapter->getUserProfile();
 
-  if (!empty($photo)) {
+    $profile = $user_profile->profileURL;
+    $photo = $user_profile->photoURL;
 
-    addToFiles('newavatar', $photo);
-    @include_once root . 'includes/classes/upload.class.php';
+    if (!empty($photo)) {
 
-    // UPLOAD AVATAR
-    if ($_FILES['newavatar']['name']) {
+      addToFiles('newavatar', $photo);
+      @include_once root . 'includes/classes/upload.class.php';
 
-      $imanage = new image_managment();
+      // UPLOAD AVATAR
+      if ($_FILES['newavatar']['name']) {
 
-      $fname = time() . '_' . strtolower($_FILES['newavatar']['name']) . '.jpg';
-      $ftmp  = $_FILES['newavatar']['tmp_name'];
+        $imanage = new image_managment();
 
-      $mysql->query("insert into " . prefix . "_images (name, orig_name, description, folder, date, owner_id, category) values ("
-        . db_squote($fname) . ", "
-        . db_squote($fname) . ", "
-        . db_squote($profile) . ", '', unix_timestamp(now()), '1', '0')");
+        $fname = time() . '_' . strtolower($_FILES['newavatar']['name']) . '.jpg';
+        $ftmp  = $_FILES['newavatar']['tmp_name'];
 
-      $rowID = $mysql->record("select LAST_INSERT_ID() as id");
+        $mysql->query("insert into " . prefix . "_images (name, orig_name, description, folder, date, owner_id, category) values ("
+          . db_squote($fname) . ", "
+          . db_squote($fname) . ", "
+          . db_squote($profile) . ", '', unix_timestamp(now()), '1', '0')");
 
-      if (copy($ftmp, $config['images_dir'] . $fname)) {
-        $sz = $imanage->get_size($config['images_dir'] . $fname);
-        $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
+        $rowID = $mysql->record("select LAST_INSERT_ID() as id");
+
+        if (copy($ftmp, $config['images_dir'] . $fname)) {
+          $sz = $imanage->get_size($config['images_dir'] . $fname);
+          $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
+        }
+
+        $url = generatePluginLink('guestbook', null, array(), array('socialID' => $rowID['id']));
+
+        echo "<script>window.opener.location.href='{$url}'; self.close();</script>\n";
       }
-
-      $url = generatePluginLink('guestbook', null, array(), array('socialID' => $rowID['id']));
-
-      // if (headers_sent()) {
-      echo "<script>window.opener.location.href='{$url}'; self.close();</script>\n";
-      // } else {
-      // header('HTTP/1.1 302 Moved Permanently');
-      // header("Location: {$url}");
-      // }
     }
   }
 }
