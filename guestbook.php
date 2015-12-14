@@ -288,6 +288,10 @@ function guestbook_list() {
     $tEntries[] = $tEntry;
   }
 
+  $vkontakte_img_id = (isset($_REQUEST['Vkontakte']) ? $_REQUEST['Vkontakte'] : '';
+  $facebook_img_id  = (isset($_REQUEST['Facebook']) ? $_REQUEST['Facebook'] : '';
+  $google_img_id    = (isset($_REQUEST['Google']) ? $_REQUEST['Google'] : '';
+
   $tVars = array(
     'comments'    => _guestbook_records($order, $start, $perpage),
     'pages'       => generatePagination($page, 1, $PagesCount, 10, $paginationParams, $navigations),
@@ -303,7 +307,10 @@ function guestbook_list() {
     'use_captcha' => (pluginGetVariable('guestbook', 'ecaptcha')),
     'captcha'     => (pluginGetVariable('guestbook', 'ecaptcha') && !(is_array($userROW))) ? recaptcha_get_html($publickey) : '',
     'use_guests'  => (!is_array($userROW) && !pluginGetVariable('guestbook','guests')),
-    'fields'      => $tEntries
+    'fields'      => $tEntries,
+    'vk_img_id'   => $vkontakte_img_id,
+    'fb_img_id'   => $facebook_img_id,
+    'gg_img_id'   => $google_img_id
   );
 
   $tpath = locatePluginTemplates(array('guestbook.list'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
