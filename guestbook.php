@@ -473,10 +473,11 @@ function guestbook_social() {
         "keys"    => array("id" => pluginGetVariable('guestbook', 'vk_client_id'), "secret" => pluginGetVariable('guestbook', 'vk_client_secret')),
       ),
       "Facebook" => array(
-        "enabled" => true,
-        "keys"    => array("id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
-        "scope"   => "email",
-        "display" => "popup"
+        "enabled"   => true,
+        "keys"      => array("id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
+        "scope"     => "email",
+        "display"   => "popup",
+        "auth_type" => "reauthenticate"
       ),
       "Google" => array(
         "enabled"         => true,
