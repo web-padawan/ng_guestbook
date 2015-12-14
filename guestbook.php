@@ -108,7 +108,7 @@ function msg_add_submit() {
         $errors[] = $lang['guestbook']['error_field_required'];
       }
       else {
-        $new_rec[$fid] = '';
+        $new_rec[$fid] = "''";
       }
     }
 
