@@ -112,6 +112,19 @@ function msg_add_submit() {
       }
     }
 
+    // get social images ID
+    $social = array();
+    if (strlen(trim($_POST['Vkontakte_id']))) {
+      $social['Vkontakte'] = $_POST['Vkontakte_id'];
+    }
+    if (strlen(trim($_POST['Facebook_id']))) {
+      $social['Facebook'] = $_POST['Facebook_id'];
+    }
+    if (strlen(trim($_POST['Google_id']))) {
+      $social['Google'] = $_POST['Google_id'];
+    }
+    $new_rec['social'] = db_squote(serialize($social));
+
     if (!count($errors)) {
 
       $mysql->query("INSERT INTO " . prefix . "_guestbook (" . implode(', ', array_keys($new_rec)) . ") values (" . implode(', ', array_values($new_rec)) . ")");
