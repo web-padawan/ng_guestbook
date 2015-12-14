@@ -477,7 +477,6 @@ function guestbook_social() {
     // UPLOAD AVATAR
     if ($_FILES['newavatar']['name']) {
 
-      $fmanage = new file_managment();
       $imanage = new image_managment();
 
       $fname = time() . '_' . strtolower($_FILES['newavatar']['name']) . '.jpg';
@@ -495,8 +494,14 @@ function guestbook_social() {
         $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
       }
 
-      echo '<img src="' . $config['images_url'] . '/default/'. $fname . '>';
-      exit;
+      $url = generatePluginLink('guestbook', null, array(), array('socialID' => $rowID['id']));
+
+      // if (headers_sent()) {
+      echo "<script>window.opener.location.href='{$url}'; self.close();</script>\n";
+      // } else {
+      // header('HTTP/1.1 302 Moved Permanently');
+      // header("Location: {$url}");
+      // }
     }
   }
 }
