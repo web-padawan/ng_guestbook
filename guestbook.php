@@ -436,7 +436,7 @@ function guestbook_edit() {
 function guestbook_social() {
   global $config, $template, $tpl, $mysql;
 
-    $adapters = array('vk', 'facebook', 'google');
+    $adapters = array('vk', 'Facebook', 'google');
 
     $auth_config = array(
       "base_url" => home . "/plugin/guesbook/lib/Hybrid/",
@@ -444,7 +444,6 @@ function guestbook_social() {
         "Facebook" => array(
           "enabled" => true,
           "keys"    => array( "id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
-          "scope"   => "user_photos",
           "display" => "popup"
         )
       )
