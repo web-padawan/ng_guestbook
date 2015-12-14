@@ -94,40 +94,32 @@
 {% else %}
 <form name="form" method="post" action="{{ php_self }}?action=add" class="review-form verifiable-form container">
   <fieldset class="row">
-{% if(global.user.name) %}
-Ваш комментарий будет опубликован от имени <strong>{{global.user.name}}</strong>
-<input type="hidden" name="author" value="{{global.user.name}}"/>
-{% else %}
+    {% if(global.user.name) %}
+      Ваш комментарий будет опубликован от имени <strong>{{global.user.name}}</strong>
+      <input type="hidden" name="author" value="{{global.user.name}}"/>
+    {% else %}
     <div class="col-xs-12 col-sm-4 col-md-3">
       <div class="form-group">
-        <label>Ваше имя</label>
-        <input type="text" class="form-control required" placeholder="{{placeholder.message}}" name="{{field.secondname}}" value="{{field.name}}">
+        <label>{{ fields[0].name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields[0].placeholder }}" name="{{ fields[0].id }}" value="{{ fields[0].default_value }}">
       </div>
     </div>
 
     <div class="col-xs-12 col-sm-4 col-md-3">
       <div class="form-group">
-        <label>Ваша фамилия</label>
-        <input type="text" class="form-control required" placeholder="{{placeholder.message}}" name="{{field.secondname}}" value="{{field.secondname}}">
+        <label>{{ fields[1].name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields[1].placeholder }}" name="{{ fields[1].id }}" value="{{ fields[1].default_value }}">
       </div>
     </div>
+
+{% endif %}
 
     <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
       <div class="form-group">
-        <label>Что вы ремонтировали у нас</label>
-        <input type="text" class="form-control required" placeholder="{{placeholder.message}}" name="{{field.secondname}}" value="{{field.item}}">
+        <label>{{ fields[2].name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields[2].placeholder }}" name="{{ fields[2].id }}" value="{{ fields[2].default_value }}">
       </div>
     </div>
-{% endif %}
-
-    {% for field in fields %}
-    <div class="col-xs-12 col-md-12">
-      <div class="form-group">
-        <label>{{ field.name }}</label>
-        <input type="text" id="{{ field.id }}" name="{{ field.id }}" class="form-control {% if field.required %}required{% endif %}" placeholder="{{ field.placeholder }}" value="{{ field.default_value }}" {% if field.required %}required{% endif %}>
-      </div>
-    </div>
-    {% endfor %}
 
     <div class="col-xs-12 col-md-12">
       <div class="form-group">
