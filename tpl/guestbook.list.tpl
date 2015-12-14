@@ -51,7 +51,7 @@
             <img src="{{ ava }}" width="60" height="60">
             {% if comment.social %}</a>{% endif %}
           </div>
-          <div class="person-name">{{ comment.fields[0].value }} {{ comment.fields[2].value }}</div>
+          <div class="person-name">{% if comment.author == 'guest' %} {{ comment.fields[0].value }} {{ comment.fields[2].value }}{% else %}{{ comment.author }}{% endif %}</div>
           <div class="review-date">{{ comment.date }}</div>
           <div class="review-subject">Ремонтировали - {{ comment.fields[1].value }}</div>
         </div>
