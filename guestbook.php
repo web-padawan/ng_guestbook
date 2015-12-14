@@ -466,12 +466,62 @@ function guestbook_social() {
 
   $user_profile = $adapter->getUserProfile();
 
-  $url = $user_profile->profileURL;
-  $img = $user_profile->photoURL;
+  $profile = $user_profile->profileURL;
+  $photo = $user_profile->photoURL;
 
-  print_r('Link: '. $url . ' Photo: ' . $img);
-  exit;
+  if (!empty($photo)) {
+
+    addToFiles('newavatar', $photo);
+    @include_once root . 'includes/classes/upload.class.php';
+
+    // UPLOAD AVATAR
+    if ($_FILES['newavatar']['name']) {
+
+      $fmanage = new file_managment();
+      $imanage = new image_managment();
+
+      $fname = time() . '_' . strtolower($_FILES['newavatar']['name']) . '.jpg';
+      $ftmp  = $_FILES['newavatar']['tmp_name'];
+
+      $mysql->query("insert into " . prefix . "_images (name, orig_name, description, folder, date, owner_id, category) values ("
+        . db_squote($fname) . ", "
+        . db_squote($fname) . ", "
+        . db_squote($profile) . ", '', unix_timestamp(now()), '1', '0')");
+
+      $rowID = $mysql->record("select LAST_INSERT_ID() as id");
+
+      if (copy($ftmp, $config['images_dir'] . $fname)) {
+        $sz = $imanage->get_size($config['images_dir'] . $fname);
+        $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
+      }
+
+      echo '<img src="' . $config['images_url'] . '/default/'. $fname . '>';
+      exit;
+    }
+  }
 }
 
+/**
+ * Add to $_FILES from external url
+ */
+function addToFiles($key, $url) {
+
+  $tempName = tempnam(ini_get('upload_tmp_dir'),'upload_');
+  $originalName = basename(parse_url($url, PHP_URL_PATH));
+
+  $imgRawData = file_get_contents($url);
+  file_put_contents($tempName, $imgRawData);
+  $info = getimagesize($tempName);
+
+  $_FILES[$key] = array(
+    'name' => $originalName,
+    'type' => $info['mime'],
+    'tmp_name' => $tempName,
+    'error' => 0,
+    'size' => strlen($imgRawData),
+  );
+
+  //return $_FILES[$key];
+}
 
 ?>
