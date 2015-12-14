@@ -107,17 +107,17 @@
 
     <div class="col-xs-12 col-sm-4 col-md-3">
       <div class="form-group">
-        <label>{{ fields[1].name }}</label>
-        <input type="text" class="form-control required" placeholder="{{ fields[1].placeholder }}" name="{{ fields[1].id }}" value="{{ fields[1].default_value }}">
+        <label>{{ fields[2].name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields[2].placeholder }}" name="{{ fields[2].id }}" value="{{ fields[2].default_value }}">
       </div>
     </div>
 
-{% endif %}
+  {% endif %}
 
     <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
       <div class="form-group">
-        <label>{{ fields[2].name }}</label>
-        <input type="text" class="form-control required" placeholder="{{ fields[2].placeholder }}" name="{{ fields[2].id }}" value="{{ fields[2].default_value }}">
+        <label>{{ fields[1].name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields[1].placeholder }}" name="{{ fields[1].id }}" value="{{ fields[1].default_value }}">
       </div>
     </div>
 
