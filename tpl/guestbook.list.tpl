@@ -48,7 +48,7 @@
           {% endif %}
           <div class="person-photo">
             {% if comment.social %}<a href="{{ link }}">{% endif %}
-            <img src="{{ ava }}">
+            <img src="{{ ava }}" width="60" height="60">
             {% if comment.social %}</a>{% endif %}
           </div>
           <div class="person-name">{{comment.name}}{{comment.secondname}}</div>
