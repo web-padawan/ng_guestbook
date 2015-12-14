@@ -361,6 +361,17 @@ function _guestbook_records($order, $start, $perpage) {
       $date_format = 'j Q Y';
     }
 
+    // get social data
+    $social = unserialize($row['social']);
+    $profiles = array();
+    foreach ($social as $name => $id) {
+      $img_row = $mysql->select("SELECT name, description FROM " . prefix . "_images WHERE id = {$id} LIMIT 1");
+      $profiles[$name] = array(
+        'photo' => $config['images_dir'] . $img_row['name'],
+        'limk'  => $img_row['description'],
+      );
+    }
+
     $comments[] = array(
       'date'    => LangDate($date_format, $row['postdate']),
       'message' => $row['message'],
@@ -370,7 +381,8 @@ function _guestbook_records($order, $start, $perpage) {
       'comnum'  => $comnum,
       'edit'    => $editlink,
       'del'     => $dellink,
-      'fields'  => $comment_fields
+      'fields'  => $comment_fields,
+      'social'  => $profiles
     );
 
   }
