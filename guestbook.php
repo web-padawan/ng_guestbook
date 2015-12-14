@@ -288,10 +288,6 @@ function guestbook_list() {
     $tEntries[] = $tEntry;
   }
 
-  $vkontakte_img_id = (isset($_REQUEST['Vkontakte'])) ? $_REQUEST['Vkontakte'] : '';
-  $facebook_img_id  = (isset($_REQUEST['Facebook'])) ? $_REQUEST['Facebook'] : '';
-  $google_img_id    = (isset($_REQUEST['Google'])) ? $_REQUEST['Google'] : '';
-
   $tVars = array(
     'comments'    => _guestbook_records($order, $start, $perpage),
     'pages'       => generatePagination($page, 1, $PagesCount, 10, $paginationParams, $navigations),
@@ -307,10 +303,7 @@ function guestbook_list() {
     'use_captcha' => (pluginGetVariable('guestbook', 'ecaptcha')),
     'captcha'     => (pluginGetVariable('guestbook', 'ecaptcha') && !(is_array($userROW))) ? recaptcha_get_html($publickey) : '',
     'use_guests'  => (!is_array($userROW) && !pluginGetVariable('guestbook','guests')),
-    'fields'      => $tEntries,
-    'vk_img_id'   => $vkontakte_img_id,
-    'fb_img_id'   => $facebook_img_id,
-    'gg_img_id'   => $google_img_id
+    'fields'      => $tEntries
   );
 
   $tpath = locatePluginTemplates(array('guestbook.list'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
@@ -472,11 +465,12 @@ function guestbook_social() {
 
   if (isset($_GET['provider']) && in_array($_GET['provider'], $providers)) {
 
+    $provider = $_GET['provider'];
     require_once($_SERVER['DOCUMENT_ROOT'] . '/engine/plugins/guestbook/lib/hybridauth/Hybrid/Auth.php');
 
     $hybridauth = new Hybrid_Auth($auth_config);
 
-    $adapter = $hybridauth->authenticate($_GET['provider']);
+    $adapter = $hybridauth->authenticate($provider);
 
     $user_profile = $adapter->getUserProfile();
 
@@ -514,9 +508,11 @@ function guestbook_social() {
           $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
         }
 
-        $url = generatePluginLink('guestbook', null, array(), array($_GET['provider'] => $rowID['id']));
+        echo "<script>window.opener.document.getElementById('" . $provider . "_li').className += 'active'; " .
+              "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; self.close();</script>\n";
 
-        echo "<script>window.opener.location.href='{$url}'; self.close();</script>\n";
+        // $url = generatePluginLink('guestbook', null, array(), array($provider => $rowID['id']));
+        // echo "<script>window.opener.location.href='{$url}'; self.close();</script>\n";
       }
     }
   }

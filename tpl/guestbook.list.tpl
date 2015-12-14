@@ -127,9 +127,9 @@
 
     <div class="social-links-wrap col-xs-12 col-sm-3 col-md-3 col-lg-2">
       <ul class="social-links social-links-default list-inline">
-        <li {% if vk_img_id %}class="active"{% endif %}><a id="vk" href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
-        <li {% if fb_img_id %}class="active"{% endif %}><a id="gg" href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
-        <li {% if gg_img_id %}class="active"{% endif %}><a id="fb" href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
+        <li id="Vkontakte_li"><a id="vk" href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+        <li id="Google_li"><a id="gg" href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+        <li id="Facebook_li"><a id="fb" href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
         <li><a href="#"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
       </ul>
     </div>
@@ -141,9 +141,9 @@
 
     {% if(use_captcha) %}{{captcha}}{% endif %}
 
-    <input type="hidden" name="vk_id" id="vk_id" value="{{ vk_img_id }}" />
-    <input type="hidden" name="fb_id" id="fb_id" value="{{ fb_img_id }}" />
-    <input type="hidden" name="gg_id" id="gg_id" value="{{ gg_img_id }}" />
+    <input type="hidden" name="Vkontakte_id" id="Vkontakte_id" value="{{ vk_img_id }}" />
+    <input type="hidden" name="Facebook_id" id="Facebook_id" value="{{ fb_img_id }}" />
+    <input type="hidden" name="Google_id" id="Google_id" value="{{ gg_img_id }}" />
   </fieldset>
 </form>
 <script>
@@ -152,9 +152,9 @@
         vk = document.getElementById('vk'),
         gg = document.getElementById('gg');
 
-    fb.onclick = function() { var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400'); n.focus(); }
-    vk.onclick = function() { var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400'); n.focus(); }
-    gg.onclick = function() { var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400'); n.focus(); }
+    fb.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400'); n.focus(); }
+    vk.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400'); n.focus(); }
+    gg.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400'); n.focus(); }
   })();
 </script>
 {% endif %}
