@@ -436,39 +436,37 @@ function guestbook_edit() {
 function guestbook_social() {
   global $config, $template, $tpl, $mysql;
 
-    session_start();
+  session_start();
 
-    $adapters = array('vk', 'Facebook', 'Google');
+  $adapters = array('vk', 'Facebook', 'Google');
 
-    $auth_config = array(
-      "base_url" => home . "/plugin/guesbook/lib/Hybrid/",
-      "providers" => array(
-        "Facebook" => array(
-          "enabled" => true,
-          "keys"    => array( "id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
-          "display" => "popup"
-        ),
-        "Google" => array(
-          "enabled" => true,
-          "keys"    => array ( "id" => pluginGetVariable('guestbook', 'google_client_id'), "secret" => pluginGetVariable('guestbook', 'google_client_secret')),
-          "scope"           => "https://www.googleapis.com/auth/userinfo.profile ",
-          "approval_prompt" => "force"
-        )
+  $auth_config = array(
+    "base_url" => home . "/plugin/guesbook/lib/Hybrid/",
+    "providers" => array(
+      "Facebook" => array(
+        "enabled" => true,
+        "keys"    => array( "id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
+        "display" => "popup"
+      ),
+      "Google" => array(
+        "enabled" => true,
+        "keys"    => array ( "id" => pluginGetVariable('guestbook', 'google_client_id'), "secret" => pluginGetVariable('guestbook', 'google_client_secret')),
+        "scope"           => "https://www.googleapis.com/auth/userinfo.profile ",
+        "approval_prompt" => "force"
       )
-    );
+    )
+  );
 
-    if (isset($_GET['provider']) && array_key_exists($_GET['provider'], $adapters)) {
-      require_once(home . "/plugin/guesbook/lib/Hybrid/Auth.php" );
+  require_once(home . "/plugin/guesbook/lib/Hybrid/Auth.php" );
 
-      $hybridauth = new Hybrid_Auth($auth_config);
+  $hybridauth = new Hybrid_Auth($auth_config);
 
-      $adapter = $hybridauth->authenticate($_GET['provider']);
+  $adapter = $hybridauth->authenticate($_GET['provider']);
 
-      $user_profile = $adapter->getUserProfile();
+  $user_profile = $adapter->getUserProfile();
 
-      print_r($user_profile);
-    }
-
+  print_r($user_profile);
+  exit;
 }
 
 
