@@ -112,6 +112,8 @@
       </div>
     </div>
 
+    <input type="hidden" name="author" value="guest"/>
+
   {% endif %}
 
     <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
