@@ -466,7 +466,10 @@ function guestbook_social() {
 
   $user_profile = $adapter->getUserProfile();
 
-  print_r($user_profile);
+  $url = $user_profile->profileURL;
+  $img = $user_profile->photoURL;
+
+  print_r('Link: '. $url . ' Photo: ' . $img);
   exit;
 }
 
