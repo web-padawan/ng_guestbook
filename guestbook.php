@@ -436,7 +436,9 @@ function guestbook_edit() {
 function guestbook_social() {
   global $config, $template, $tpl, $mysql;
 
-    $adapters = array('vk', 'Facebook', 'google');
+    session_start();
+
+    $adapters = array('vk', 'Facebook', 'Google');
 
     $auth_config = array(
       "base_url" => home . "/plugin/guesbook/lib/Hybrid/",
@@ -445,6 +447,12 @@ function guestbook_social() {
           "enabled" => true,
           "keys"    => array( "id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
           "display" => "popup"
+        ),
+        "Google" => array(
+          "enabled" => true,
+          "keys"    => array ( "id" => pluginGetVariable('guestbook', 'google_client_id'), "secret" => pluginGetVariable('guestbook', 'google_client_secret')),
+          "scope"           => "https://www.googleapis.com/auth/userinfo.profile ",
+          "approval_prompt" => "force"
         )
       )
     );
