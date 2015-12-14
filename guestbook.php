@@ -484,6 +484,9 @@ function guestbook_social() {
 
       // Prevent duplicate uploads
       $exist = $mysql->record("SELECT id FROM " . prefix . "_images WHERE description = " .  db_squote($profile) . " LIMIT 1");
+      print_r($exist);
+      exit;
+
       if (!empty($exist['id'])) {
         $rowID = $exist;
       }
