@@ -112,7 +112,7 @@
   {% endif %}
 
     {% if(global.user.name) %}
-      <div class="col-xs-12 col-sm-4 col-md-3">
+      <div class="col-xs-12 col-sm-12 col-md-12">
     {% else %}
       <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
     {% endif %}
