@@ -127,9 +127,9 @@
 
     <div class="social-links-wrap col-xs-12 col-sm-3 col-md-3 col-lg-2">
       <ul class="social-links social-links-default list-inline">
-        <li><a href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
-        <li><a href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
-        <li><a href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
+        <li><a id="vk" href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+        <li><a id="gg" href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+        <li><a id="fb" href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
         <li><a href="#"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
       </ul>
     </div>
@@ -143,4 +143,15 @@
 
   </fieldset>
 </form>
+<script>
+  (function() {
+    var fb = document.getElementById('fb'),
+        vk = document.getElementById('vk'),
+        gg = document.getElementById('gg');
+
+    fb.onclick = function() { var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400'); n.focus(); }
+    vk.onclick = function() { var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400'); n.focus(); }
+    gg.onclick = function() { var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400'); n.focus(); }
+  })();
+</script>
 {% endif %}
