@@ -443,16 +443,22 @@ function guestbook_social() {
   $auth_config = array(
     "base_url" => home . "/engine/plugins/guestbook/lib/hybridauth/",
     "providers" => array(
+      "Vkontakte" => array(
+        "enabled" => true,
+        "keys"    => array("id" => pluginGetVariable('guestbook', 'vk_client_id'), "secret" => pluginGetVariable('guestbook', 'vk_client_secret')),
+        "display" => "popup"
+      ),
       "Facebook" => array(
         "enabled" => true,
-        "keys"    => array( "id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
+        "keys"    => array("id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
         "scope"   => "email",
         "display" => "popup"
       ),
       "Google" => array(
-        "enabled" => true,
-        "keys"    => array ( "id" => pluginGetVariable('guestbook', 'google_client_id'), "secret" => pluginGetVariable('guestbook', 'google_client_secret')),
-        "scope"           => "https://www.googleapis.com/auth/userinfo.profile ",
+        "enabled"         => true,
+        "keys"            => array("id" => pluginGetVariable('guestbook', 'google_client_id'), "secret" => pluginGetVariable('guestbook', 'google_client_secret')),
+        "scope"           => "https://www.googleapis.com/auth/userinfo.profile",
+        "display"         => "popup",
         "approval_prompt" => "force"
       )
     )
