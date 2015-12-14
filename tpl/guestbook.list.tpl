@@ -111,7 +111,11 @@
 
   {% endif %}
 
-    <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
+    {% if(global.user.name) %}
+      <div class="col-xs-12 col-sm-4 col-md-3">
+    {% else %}
+      <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
+    {% endif %}
       <div class="form-group">
         <label>{{ fields[1].name }}</label>
         <input type="text" class="form-control required" placeholder="{{ fields[1].placeholder }}" name="{{ fields[1].id }}" value="{{ fields[1].default_value }}">
