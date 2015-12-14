@@ -127,9 +127,9 @@
 
     <div class="social-links-wrap col-xs-12 col-sm-3 col-md-3 col-lg-2">
       <ul class="social-links social-links-default list-inline">
-        <li><a id="vk" href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
-        <li><a id="gg" href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
-        <li><a id="fb" href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
+        <li {% if vk_img_id %}class="active"{% endif %}><a id="vk" href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+        <li {% if fb_img_id %}class="active"{% endif %}><a id="gg" href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+        <li {% if gg_img_id %}class="active"{% endif %}><a id="fb" href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
         <li><a href="#"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
       </ul>
     </div>
@@ -141,6 +141,9 @@
 
     {% if(use_captcha) %}{{captcha}}{% endif %}
 
+    <input type="hidden" name="vk_id" id="vk_id" value="{{ vk_img_id }}" />
+    <input type="hidden" name="fb_id" id="fb_id" value="{{ fb_img_id }}" />
+    <input type="hidden" name="gg_id" id="gg_id" value="{{ gg_img_id }}" />
   </fieldset>
 </form>
 <script>
