@@ -484,8 +484,6 @@ function guestbook_social() {
 
       // Prevent duplicate uploads
       $exist = $mysql->record("SELECT id FROM " . prefix . "_images WHERE description = " .  db_squote($profile) . " LIMIT 1");
-      print_r($exist);
-      exit;
 
       if (!empty($exist['id'])) {
         $rowID = $exist;
@@ -518,10 +516,9 @@ function guestbook_social() {
             $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
           }
         }
-
-        echo "<script>window.opener.document.getElementById('" . $provider . "_li').className += 'active'; " .
-             "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; self.close();</script>\n";
       }
+      echo "<script>window.opener.document.getElementById('" . $provider . "_li').className += 'active'; " .
+           "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; self.close();</script>\n";
     }
   }
 }
