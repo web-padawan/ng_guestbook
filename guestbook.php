@@ -4,6 +4,8 @@ if (!defined('NGCMS')) die ('HAL');
 
 register_plugin_page('guestbook','','guestbook_list');
 register_plugin_page('guestbook','edit','guestbook_edit');
+register_plugin_page('guestbook','social','guestbook_social');
+
 LoadPluginLang('guestbook', 'main', '', '', '#');
 
 switch ($_REQUEST['action']) {
@@ -430,5 +432,37 @@ function guestbook_edit() {
   }
 
 }
+
+function guestbook_social() {
+  global $config, $template, $tpl, $mysql;
+
+    $adapters = array('vk', 'facebook', 'google');
+
+    $auth_config = array(
+      "base_url" => home . "/plugin/guesbook/lib/Hybrid/",
+      "providers" => array(
+        "Facebook" => array(
+          "enabled" => true,
+          "keys"    => array( "id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
+          "scope"   => "user_photos",
+          "display" => "popup"
+        )
+      )
+    );
+
+    if (isset($_GET['provider']) && array_key_exists($_GET['provider'], $adapters) {
+      require_once(home . "/plugin/guesbook/lib/Hybrid/Auth.php" );
+
+      $hybridauth = new Hybrid_Auth($auth_config);
+
+      $adapter = $hybridauth->authenticate($_GET['provider']);
+
+      $user_profile = $adapter->getUserProfile();
+
+      print_r($user_profile);
+    }
+
+}
+
 
 ?>
