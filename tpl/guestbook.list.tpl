@@ -51,14 +51,9 @@
             <img src="{{ ava }}" width="60" height="60">
             {% if comment.social %}</a>{% endif %}
           </div>
-          <div class="person-name">{{comment.name}}{{comment.secondname}}</div>
+          <div class="person-name">{{ comment.fields[0].value }} {{ comment.fields[2].value }}</div>
           <div class="review-date">{{ comment.date }}</div>
-          <div class="review-subject">Ремонтировали - {{comment.item}}</div>
-          <!-- begin fields -->
-          {% for field in comment.fields %}
-            {% if field.value %}<div class="person-name">{{ field.name }} - {{ field.value }}</div>{% endif %}
-          {% endfor %}
-          <!-- end fields -->
+          <div class="review-subject">Ремонтировали - {{ comment.fields[1].value }}</div>
         </div>
         <div class="review-caption"><p>{{comment.message}}</p></div>
         {% if(global.user.id) and (global.user.status == '1') %}
