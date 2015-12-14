@@ -482,37 +482,42 @@ function guestbook_social() {
 
     if (!empty($photo)) {
 
-      addToFiles('newavatar', $photo);
-      @include_once root . 'includes/classes/upload.class.php';
+      // Prevent duplicate uploads
+      $exist = $mysql->record("SELECT id FROM " . prefix . "_images WHERE description = " .  db_squote($profile) . " LIMIT 1");
+      if (!empty($exist['id'])) {
+        $rowID = $exist;
+      }
+      else {
+        addToFiles('newavatar', $photo);
+        @include_once root . 'includes/classes/upload.class.php';
 
-      // UPLOAD AVATAR
-      if ($_FILES['newavatar']['name']) {
+        // UPLOAD AVATAR
+        if ($_FILES['newavatar']['name']) {
 
-        $imanage = new image_managment();
+          $imanage = new image_managment();
 
-        $fname = time() . '_' . strtolower($_FILES['newavatar']['name']);
-        if (!strpos($fname, '.jpg')) {
-          $fname .= '.jpg';
-        }
-        $ftmp  = $_FILES['newavatar']['tmp_name'];
+          $fname = time() . '_' . strtolower($_FILES['newavatar']['name']);
+          if (!strpos($fname, '.jpg')) {
+            $fname .= '.jpg';
+          }
+          $ftmp  = $_FILES['newavatar']['tmp_name'];
 
-        $mysql->query("insert into " . prefix . "_images (name, orig_name, description, folder, date, owner_id, category) values ("
-          . db_squote($fname) . ", "
-          . db_squote($fname) . ", "
-          . db_squote($profile) . ", '', unix_timestamp(now()), '1', '0')");
 
-        $rowID = $mysql->record("select LAST_INSERT_ID() as id");
+          $mysql->query("INSERT INTO " . prefix . "_images (name, orig_name, description, folder, date, owner_id, category) VALUES ("
+              . db_squote($fname) . ", "
+              . db_squote($fname) . ", "
+              . db_squote($profile) . ", '', unix_timestamp(now()), '1', '0')");
 
-        if (copy($ftmp, $config['images_dir'] . $fname)) {
-          $sz = $imanage->get_size($config['images_dir'] . $fname);
-          $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
+          $rowID = $mysql->record("select LAST_INSERT_ID() as id");
+
+          if (copy($ftmp, $config['images_dir'] . $fname)) {
+            $sz = $imanage->get_size($config['images_dir'] . $fname);
+            $mysql->query("update " . prefix . "_images set width=" . db_squote($sz['1']) . ", height=" . db_squote($sz['2']) . " where id = " . db_squote($rowID['id']) . " ");
+          }
         }
 
         echo "<script>window.opener.document.getElementById('" . $provider . "_li').className += 'active'; " .
-              "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; self.close();</script>\n";
-
-        // $url = generatePluginLink('guestbook', null, array(), array($provider => $rowID['id']));
-        // echo "<script>window.opener.location.href='{$url}'; self.close();</script>\n";
+             "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; self.close();</script>\n";
       }
     }
   }
