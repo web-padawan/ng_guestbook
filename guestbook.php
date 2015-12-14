@@ -544,9 +544,11 @@ function guestbook_social() {
         }
       }
       $adapter->logout();
+      $prelogout = ($adapter == 'Vkontakte') ? 'window.location.href="https://api.vk.com/oauth/logout?client_id=' . pluginGetVariable('guestbook', 'vk_client_id') . '";' : '';
 
       echo "<script>window.opener.document.getElementById('" . $provider . "_li').className += 'active'; " .
-           "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; self.close();</script>\n";
+           "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; "
+           . $prelogout ." self.close();</script>\n";
     }
   }
 }
