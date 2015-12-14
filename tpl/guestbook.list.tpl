@@ -141,6 +141,9 @@
 
     {% if(use_captcha) %}{{captcha}}{% endif %}
 
+    <input type="hidden" name="vk_id" id="vk_id" value="{{ vk_img_id }}" />
+    <input type="hidden" name="fb_id" id="fb_id" value="{{ fb_img_id }}" />
+    <input type="hidden" name="gg_id" id="gg_id" value="{{ gg_img_id }}" />
   </fieldset>
 </form>
 <script>
