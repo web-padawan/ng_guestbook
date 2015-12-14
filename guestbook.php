@@ -367,7 +367,7 @@ function _guestbook_records($order, $start, $perpage) {
     foreach ($social as $name => $id) {
       $img = $mysql->record("SELECT name, description FROM " . prefix . "_images WHERE id = {$id}");
       $profiles[$name] = array(
-        'photo' => $config['images_dir'] . $img['name'],
+        'photo' => $config['images_url'] . '/' . $img['name'],
         'link'  => $img['description'],
       );
     }
