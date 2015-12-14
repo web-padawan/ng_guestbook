@@ -1,3 +1,4 @@
+{{ debugValue(fields) }}
 <section class="content container">
   <div class="row">
 
@@ -51,9 +52,9 @@
             <img src="{{ ava }}" width="60" height="60">
             {% if comment.social %}</a>{% endif %}
           </div>
-          <div class="person-name">{% if comment.author == 'guest' %} {{ comment.fields[0].value }} {{ comment.fields[2].value }}{% else %}{{ comment.author }}{% endif %}</div>
+          <div class="person-name">{% if comment.author == 'guest' %} {{ comment.fields.firstname.value }} {{ comment.fields.lastname.value }}{% else %}{{ comment.author }}{% endif %}</div>
           <div class="review-date">{{ comment.date }}</div>
-          <div class="review-subject">Ремонтировали - {{ comment.fields[1].value }}</div>
+          <div class="review-subject">Ремонтировали - {{ comment.fields.item.value }}</div>
         </div>
         <div class="review-caption"><p>{{comment.message}}</p></div>
         {% if(global.user.id) and (global.user.status == '1') %}
@@ -95,15 +96,15 @@
     {% else %}
     <div class="col-xs-12 col-sm-4 col-md-3">
       <div class="form-group">
-        <label>{{ fields[0].name }}</label>
-        <input type="text" class="form-control required" placeholder="{{ fields[0].placeholder }}" name="{{ fields[0].id }}" value="{{ fields[0].default_value }}">
+        <label>{{ fields.firstname.name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields.firstname.placeholder }}" name="{{ fields.firstname.id }}" value="{{ fields.firstname.default_value }}">
       </div>
     </div>
 
     <div class="col-xs-12 col-sm-4 col-md-3">
       <div class="form-group">
-        <label>{{ fields[2].name }}</label>
-        <input type="text" class="form-control required" placeholder="{{ fields[2].placeholder }}" name="{{ fields[2].id }}" value="{{ fields[2].default_value }}">
+        <label>{{ fields.lastname.name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields.lastname.placeholder }}" name="{{ fields.lastname.id }}" value="{{ fields.lastname.default_value }}">
       </div>
     </div>
 
@@ -117,8 +118,8 @@
       <div class="col-xs-12 col-sm-4 col-md-3 col-md-offset-3">
     {% endif %}
       <div class="form-group">
-        <label>{{ fields[1].name }}</label>
-        <input type="text" class="form-control required" placeholder="{{ fields[1].placeholder }}" name="{{ fields[1].id }}" value="{{ fields[1].default_value }}">
+        <label>{{ fields.item.name }}</label>
+        <input type="text" class="form-control required" placeholder="{{ fields.item.placeholder }}" name="{{ fields.item.id }}" value="{{ fields.item.default_value }}">
       </div>
     </div>
 

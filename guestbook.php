@@ -298,7 +298,7 @@ function guestbook_list() {
       'default_value'   => $fRow['default_value'],
       'required'        => intval($fRow['required'])
     );
-    $tEntries[] = $tEntry;
+    $tEntries[$fRow['id']] = $tEntry;
   }
 
   $tVars = array(
@@ -348,7 +348,7 @@ function _guestbook_records($order, $start, $perpage) {
 
     $comment_fields = array();
     foreach($fields as $fid => $fname) {
-      $comment_fields[] = array(
+      $comment_fields[$fid] = array(
         'id'      => $fid,
         'name'    => $fname,
         'value'   => $row[$fid],
