@@ -473,8 +473,8 @@ function guestbook_social() {
 
     $user_profile = $adapter->getUserProfile();
 
-    print_r($user_profile);
-    exit;
+    // print_r($user_profile);
+    // exit;
 
     $profile = $user_profile->profileURL;
     $photo = $user_profile->photoURL;
