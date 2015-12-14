@@ -489,7 +489,10 @@ function guestbook_social() {
 
         $imanage = new image_managment();
 
-        $fname = time() . '_' . strtolower($_FILES['newavatar']['name']) . '.jpg';
+        $fname = time() . '_' . strtolower($_FILES['newavatar']['name']);
+        if (!strpos($fname, '.jpg')) {
+          $fname .= '.jpg';
+        }
         $ftmp  = $_FILES['newavatar']['tmp_name'];
 
         $mysql->query("insert into " . prefix . "_images (name, orig_name, description, folder, date, owner_id, category) values ("
