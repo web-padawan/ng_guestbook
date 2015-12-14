@@ -19,6 +19,7 @@
         <a href="{{admin_url}}/admin.php?mod=extra-config&plugin=guestbook" class="navbutton">{{ lang['gbconfig']['menu_settings'] }}</a>
         <a href="{{admin_url}}/admin.php?mod=extra-config&plugin=guestbook&action=show_messages" class="navbutton">{{ lang['gbconfig']['menu_messages'] }}</a>
         <a href="{{admin_url}}/admin.php?mod=extra-config&plugin=guestbook&action=manage_fields" class="navbutton">{{ lang['gbconfig']['menu_fields'] }}</a>
+        <a href="{{admin_url}}/admin.php?mod=extra-config&plugin=guestbook&action=social" class="navbutton">{{ lang['gbconfig']['menu_social'] }}</a>
       </td>
     </tr>
   </table>

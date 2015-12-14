@@ -27,6 +27,8 @@ switch ($_REQUEST['action']) {
                           break;
   case 'modify'         : modify(); show_messages();
                           break;
+  case 'social'         : social_config();
+                          break;
   default               : show_options();
 }
 
@@ -517,4 +519,58 @@ function modify() {
   }
 
   msg(array("type" => "info", "info" => sprintf($msg , $id)));
+}
+
+/*
+ * Social config page
+ */
+function social_config() {
+  global $tpl, $mysql, $lang, $twig;
+
+  $tpath = locatePluginTemplates(array('config/main', 'config/social'), 'guestbook', 1);
+
+  if (isset($_REQUEST['submit'])) {
+    pluginSetVariable('auth_social', 'vk_client_id', secure_html($_REQUEST['vk_client_id']));
+    pluginSetVariable('auth_social', 'vk_client_secret', secure_html($_REQUEST['vk_client_secret']));
+
+    pluginSetVariable('auth_social', 'facebook_client_id', secure_html($_REQUEST['facebook_client_id']));
+    pluginSetVariable('auth_social', 'facebook_client_secret', secure_html($_REQUEST['facebook_client_secret']));
+
+    pluginSetVariable('auth_social', 'google_client_id', secure_html($_REQUEST['google_client_id']));
+    pluginSetVariable('auth_social', 'google_client_secret', secure_html($_REQUEST['google_client_secret']));
+
+    pluginsSaveConfig();
+    msg(array("text" => $lang['gbconfig']['msgo_settings_saved']));
+  }
+
+  $vk_client_id = pluginGetVariable('auth_social', 'vk_client_id');
+  $vk_client_secret = pluginGetVariable('auth_social', 'vk_client_secret');
+
+  $facebook_client_id = pluginGetVariable('auth_social', 'facebook_client_id');
+  $facebook_client_secret = pluginGetVariable('auth_social', 'facebook_client_secret');
+
+  $google_client_id = pluginGetVariable('auth_social', 'google_client_id');
+  $google_client_secret = pluginGetVariable('auth_social', 'google_client_secret');
+
+  $xt = $twig->loadTemplate($tpath['config/social'] . 'config/social.tpl');
+
+  $tVars = array(
+    'skins_url'               =>  skins_url,
+    'home'                    =>  home,
+    'tpl_home'                => admin_url,
+    'vk_client_id'            => $vk_client_id,
+    'vk_client_secret'        => $vk_client_secret,
+    'facebook_client_id'      => $facebook_client_id,
+    'facebook_client_secret'  => $facebook_client_secret,
+    'google_client_id'        => $google_client_id,
+    'google_client_secret'    => $google_client_secret
+  );
+
+  $xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
+
+  $tVars = array(
+    'entries' => $xt->render($tVars),
+  );
+
+  print $xg->render($tVars);
 }
