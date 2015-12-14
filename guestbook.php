@@ -497,7 +497,7 @@ function guestbook_social() {
 
           $imanage = new image_managment();
 
-          $fname = time() . '_' . strtolower($_FILES['newavatar']['name']);
+          $fname = $provider . '_' . time() . '_' . strtolower($_FILES['newavatar']['name']);
           if (!strpos($fname, '.jpg')) {
             $fname .= '.jpg';
           }
