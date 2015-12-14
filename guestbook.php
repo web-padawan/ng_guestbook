@@ -446,7 +446,6 @@ function guestbook_social() {
       "Vkontakte" => array(
         "enabled" => true,
         "keys"    => array("id" => pluginGetVariable('guestbook', 'vk_client_id'), "secret" => pluginGetVariable('guestbook', 'vk_client_secret')),
-        "display" => "popup"
       ),
       "Facebook" => array(
         "enabled" => true,
@@ -464,7 +463,7 @@ function guestbook_social() {
     )
   );
 
-  if (isset($_GET['provider']) && array_key_exists($_GET['provider'], $providers)) {
+  if (isset($_GET['provider']) && in_array($_GET['provider'], $providers)) {
 
     require_once($_SERVER['DOCUMENT_ROOT'] . '/engine/plugins/guestbook/lib/hybridauth/Hybrid/Auth.php');
 
@@ -473,6 +472,9 @@ function guestbook_social() {
     $adapter = $hybridauth->authenticate($_GET['provider']);
 
     $user_profile = $adapter->getUserProfile();
+
+    print_r($user_profile);
+    exit;
 
     $profile = $user_profile->profileURL;
     $photo = $user_profile->photoURL;
