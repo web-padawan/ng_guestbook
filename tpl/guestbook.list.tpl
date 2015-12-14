@@ -141,9 +141,9 @@
 
     {% if(use_captcha) %}{{captcha}}{% endif %}
 
-    <input type="hidden" name="Vkontakte_id" id="Vkontakte_id" value="{{ vk_img_id }}" />
-    <input type="hidden" name="Facebook_id" id="Facebook_id" value="{{ fb_img_id }}" />
-    <input type="hidden" name="Google_id" id="Google_id" value="{{ gg_img_id }}" />
+    <input type="hidden" name="Vkontakte_id" id="Vkontakte_id" value="" />
+    <input type="hidden" name="Facebook_id" id="Facebook_id" value="" />
+    <input type="hidden" name="Google_id" id="Google_id" value="" />
   </fieldset>
 </form>
 <script>
