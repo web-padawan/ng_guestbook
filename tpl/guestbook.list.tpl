@@ -1,4 +1,3 @@
-{{ debugValue(fields) }}
 <section class="content container">
   <div class="row">
 
