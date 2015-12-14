@@ -32,7 +32,25 @@
     <div class="review col-xs-12 col-sm-6">
       <div class="review-inner">
         <div class="review-header">
-          <div class="person-photo"><img src="/uploads/images/review/ava1.png"> </div>
+          {% if comment.social %}
+            {% if comment.social.Vkontakte.photo %}
+              {% set ava = comment.social.Vkontakte.photo %}
+              {% set link = comment.social.Vkontakte.link %}
+            {% elseif comment.social.Facebook.photo %}
+              {% set ava = comment.social.Facebook.photo %}
+              {% set link = comment.social.Facebook.link %}
+            {% elseif comment.social.Google.photo %}
+              {% set ava = comment.social.Google.photo %}
+              {% set link = comment.social.Google.link %}
+            {% endif %}
+          {% else %}
+            {% set ava = '/uploads/avatars/noavatar.gif' %}
+          {% endif %}
+          <div class="person-photo">
+            {% if comment.social %}<a href="{{ link }}">{% endif %}
+            <img src="{{ ava }}">
+            {% if comment.social %}</a>{% endif %}
+          </div>
           <div class="person-name">{{comment.name}}{{comment.secondname}}</div>
           <div class="review-date">{{ comment.date }}</div>
           <div class="review-subject">Ремонтировали - {{comment.item}}</div>
