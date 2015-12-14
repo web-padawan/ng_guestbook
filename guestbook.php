@@ -365,10 +365,10 @@ function _guestbook_records($order, $start, $perpage) {
     $social = unserialize($row['social']);
     $profiles = array();
     foreach ($social as $name => $id) {
-      $img = $mysql->result("SELECT name, description FROM " . prefix . "_images WHERE id = {$id} LIMIT 1");
+      $img = $mysql->record("SELECT name, description FROM " . prefix . "_images WHERE id = {$id}");
       $profiles[$name] = array(
         'photo' => $config['images_dir'] . $img['name'],
-        'limk'  => $img['description'],
+        'link'  => $img['description'],
       );
     }
 
