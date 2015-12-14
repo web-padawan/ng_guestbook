@@ -542,7 +542,7 @@ function guestbook_social() {
           }
         }
       }
-      $hybridauth->logoutAllProviders();
+      $adapter->logout();
 
       echo "<script>window.opener.document.getElementById('" . $provider . "_li').className += 'active'; " .
            "window.opener.document.getElementById('" . $provider . "_id').value = " . $rowID['id'] ."; self.close();</script>\n";
