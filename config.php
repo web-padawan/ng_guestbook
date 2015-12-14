@@ -530,27 +530,27 @@ function social_config() {
   $tpath = locatePluginTemplates(array('config/main', 'config/social'), 'guestbook', 1);
 
   if (isset($_REQUEST['submit'])) {
-    pluginSetVariable('auth_social', 'vk_client_id', secure_html($_REQUEST['vk_client_id']));
-    pluginSetVariable('auth_social', 'vk_client_secret', secure_html($_REQUEST['vk_client_secret']));
+    pluginSetVariable('guestbook', 'vk_client_id', secure_html($_REQUEST['vk_client_id']));
+    pluginSetVariable('guestbook', 'vk_client_secret', secure_html($_REQUEST['vk_client_secret']));
 
-    pluginSetVariable('auth_social', 'facebook_client_id', secure_html($_REQUEST['facebook_client_id']));
-    pluginSetVariable('auth_social', 'facebook_client_secret', secure_html($_REQUEST['facebook_client_secret']));
+    pluginSetVariable('guestbook', 'facebook_client_id', secure_html($_REQUEST['facebook_client_id']));
+    pluginSetVariable('guestbook', 'facebook_client_secret', secure_html($_REQUEST['facebook_client_secret']));
 
-    pluginSetVariable('auth_social', 'google_client_id', secure_html($_REQUEST['google_client_id']));
-    pluginSetVariable('auth_social', 'google_client_secret', secure_html($_REQUEST['google_client_secret']));
+    pluginSetVariable('guestbook', 'google_client_id', secure_html($_REQUEST['google_client_id']));
+    pluginSetVariable('guestbook', 'google_client_secret', secure_html($_REQUEST['google_client_secret']));
 
     pluginsSaveConfig();
     msg(array("text" => $lang['gbconfig']['msgo_settings_saved']));
   }
 
-  $vk_client_id = pluginGetVariable('auth_social', 'vk_client_id');
-  $vk_client_secret = pluginGetVariable('auth_social', 'vk_client_secret');
+  $vk_client_id = pluginGetVariable('guestbook', 'vk_client_id');
+  $vk_client_secret = pluginGetVariable('guestbook', 'vk_client_secret');
 
-  $facebook_client_id = pluginGetVariable('auth_social', 'facebook_client_id');
-  $facebook_client_secret = pluginGetVariable('auth_social', 'facebook_client_secret');
+  $facebook_client_id = pluginGetVariable('guestbook', 'facebook_client_id');
+  $facebook_client_secret = pluginGetVariable('guestbook', 'facebook_client_secret');
 
-  $google_client_id = pluginGetVariable('auth_social', 'google_client_id');
-  $google_client_secret = pluginGetVariable('auth_social', 'google_client_secret');
+  $google_client_id = pluginGetVariable('guestbook', 'google_client_id');
+  $google_client_secret = pluginGetVariable('guestbook', 'google_client_secret');
 
   $xt = $twig->loadTemplate($tpath['config/social'] . 'config/social.tpl');
 
