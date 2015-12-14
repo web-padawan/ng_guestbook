@@ -446,6 +446,7 @@ function guestbook_social() {
       "Facebook" => array(
         "enabled" => true,
         "keys"    => array( "id" => pluginGetVariable('guestbook', 'facebook_client_id'), "secret" => pluginGetVariable('guestbook', 'facebook_client_secret')),
+        "scope"   => "email",
         "display" => "popup"
       ),
       "Google" => array(
