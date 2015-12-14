@@ -441,7 +441,7 @@ function guestbook_social() {
   $adapters = array('vk', 'Facebook', 'Google');
 
   $auth_config = array(
-    "base_url" => home . "/engine/plugin/guesbook/lib/Hybrid/",
+    "base_url" => home . "/engine/plugin/guestbook/lib/Hybrid/",
     "providers" => array(
       "Facebook" => array(
         "enabled" => true,
@@ -457,7 +457,7 @@ function guestbook_social() {
     )
   );
 
-  require_once(home . "/engine/plugin/guesbook/lib/Hybrid/Auth.php" );
+  require_once($_SERVER['DOCUMENT_ROOT']) .'/engine/plugin/guestbook/lib/Hybrid/Auth.php');
 
   $hybridauth = new Hybrid_Auth($auth_config);
 
