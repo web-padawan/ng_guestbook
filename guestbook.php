@@ -450,7 +450,7 @@ function guestbook_social() {
       )
     );
 
-    if (isset($_GET['provider']) && array_key_exists($_GET['provider'], $adapters) {
+    if (isset($_GET['provider']) && array_key_exists($_GET['provider'], $adapters)) {
       require_once(home . "/plugin/guesbook/lib/Hybrid/Auth.php" );
 
       $hybridauth = new Hybrid_Auth($auth_config);
