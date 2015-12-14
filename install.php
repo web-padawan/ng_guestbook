@@ -29,6 +29,7 @@ function plugin_guestbook_install($action) {
         array('action' => 'create', 'name' => 'ip', 'type' => 'varchar(40)', 'params' => "not null default ''"),
         array('action' => 'create', 'name' => 'status', 'type' => 'int', 'params' => "not null default '0'"),
         array('action' => 'create', 'name' => 'fields', 'type' => 'text'),
+        array('action' => 'create', 'name' => 'social', 'type' => 'text'),
       )
     ),
     array(
