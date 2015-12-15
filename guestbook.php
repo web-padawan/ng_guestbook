@@ -507,9 +507,13 @@ function guestbook_social() {
     $provider = $_GET['provider'];
     require_once($_SERVER['DOCUMENT_ROOT'] . '/engine/plugins/guestbook/lib/hybridauth/Hybrid/Auth.php');
 
-    $hybridauth = new Hybrid_Auth($auth_config);
-
-    $adapter = $hybridauth->authenticate($provider);
+    try {
+      $hybridauth = new Hybrid_Auth($auth_config);
+      $adapter = $hybridauth->authenticate($provider);
+    }
+    catch (Exception $e){
+      echo "<script>self.close();</script>\n";
+    }
 
     $user_profile = $adapter->getUserProfile();
 
