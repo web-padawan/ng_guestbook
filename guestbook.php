@@ -315,7 +315,7 @@ function guestbook_list($params = array()) {
   }
 
   $tVars = array(
-    'comments'    => _guestbook_records($order, $start, $perpage),
+    'entries'     => _guestbook_records($order, $start, $perpage),
     'pages'       => generatePagination($page, 1, $PagesCount, 10, $paginationParams, $navigations),
     'total_count' => $total_count,
     'perpage'     => $perpage,

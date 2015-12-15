@@ -28,57 +28,57 @@
 
 {% if (total_count > 0) %}
 
-    {% for comment in comments %}
+    {% for entry in entries %}
     <div class="review col-xs-12 col-sm-6">
       <div class="review-inner">
         <div class="review-header">
-          {% if comment.social %}
-            {% if comment.social.Vkontakte.photo %}
-              {% set avatar = comment.social.Vkontakte.photo %}
-            {% elseif comment.social.Facebook.photo %}
-              {% set avatar = comment.social.Facebook.photo %}
-            {% elseif comment.social.Instagram.photo %}
-              {% set avatar = comment.social.Instagram.photo %}
-            {% elseif comment.social.Google.photo %}
-              {% set avatar = comment.social.Google.photo %}
+          {% if entry.social %}
+            {% if entry.social.Vkontakte.photo %}
+              {% set avatar = entry.social.Vkontakte.photo %}
+            {% elseif entry.social.Facebook.photo %}
+              {% set avatar = entry.social.Facebook.photo %}
+            {% elseif entry.social.Instagram.photo %}
+              {% set avatar = entry.social.Instagram.photo %}
+            {% elseif entry.social.Google.photo %}
+              {% set avatar = entry.social.Google.photo %}
             {% endif %}
           {% else %}
             {% set avatar = '/uploads/avatars/noavatar.gif' %}
           {% endif %}
           <div class="person-photo"><img src="{{ avatar }}" width="60" height="60"></div>
-          <div class="person-name">{% if comment.author == 'guest' %} {{ comment.fields.firstname.value }} {{ comment.fields.lastname.value }}{% else %}{{ comment.author }}{% endif %}</div>
-          <div class="review-date">{{ comment.date }}</div>
-          <div class="review-subject">Ремонтировали - {{ comment.fields.item.value }}</div>
+          <div class="person-name">{% if entry.author == 'guest' %} {{ entry.fields.firstname.value }} {{ entry.fields.lastname.value }}{% else %}{{ entry.author }}{% endif %}</div>
+          <div class="review-date">{{ entry.date }}</div>
+          <div class="review-subject">Ремонтировали - {{ entry.fields.item.value }}</div>
         </div>
-        <div class="review-caption"><p>{{comment.message}}</p></div>
+        <div class="review-caption"><p>{{entry.message}}</p></div>
         {% if(global.user.id) and (global.user.status == '1') %}
         <div class="review-caption">
           <p>
-            {{ comment.ip }} /
-            <a href="{{ home }}/engine/admin.php?mod=extra-config&plugin=guestbook&action=edit_message&id={{comment.id }}">Редактировать</a> /
-            <a href="{{ comment.del }}">Удалить</a>
+            {{ entry.ip }} /
+            <a href="{{ home }}/engine/admin.php?mod=extra-config&plugin=guestbook&action=edit_message&id={{ entry.id }}">Редактировать</a> /
+            <a href="{{ entry.del }}">Удалить</a>
           </p>
         </div>
         {% endif %}
         <div class="review-social">
           <ul class="social-links social-links-default list-inline">
-            {% if comment.social.Vkontakte %}
-              <li class="active"><a href="{{ comment.social.Vkontakte.link }}"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+            {% if entry.social.Vkontakte %}
+              <li class="active"><a href="{{ entry.social.Vkontakte.link }}"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></li>
             {% endif %}
-            {% if comment.social.Google %}
-              <li class="active"><a href="{{ comment.social.Google.link }}"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+            {% if entry.social.Google %}
+              <li class="active"><a href="{{ entry.social.Google.link }}"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></li>
             {% endif %}
-            {% if comment.social.Facebook %}
-              <li class="active"><a href="{{ comment.social.Facebook.link }}"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
+            {% if entry.social.Facebook %}
+              <li class="active"><a href="{{ entry.social.Facebook.link }}"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></li>
             {% endif %}
-            {% if comment.social.Instagram %}
-              <li class="active"><a href="{{ comment.social.Instagram.link }}"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
+            {% if entry.social.Instagram %}
+              <li class="active"><a href="{{ entry.social.Instagram.link }}"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></li>
             {% endif %}
