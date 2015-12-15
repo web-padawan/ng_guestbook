@@ -19,7 +19,7 @@
       <td width="20%" class="contentEntry1">{{ entry.message }}</td>
       <td width="15%" class="contentEntry1">{{ entry.answer }}</td>
       <td width="10%" class="contentEntry1">{{ entry.ip }}</td>
-      <td width="10%" class="contentEntry1">{{ entry.status }}</td>
+      <td width="10%" class="contentEntry1">{% if entry.status == '1' %}{{ lang['gbconfig']['message_active'] }}{% elseif entry.status == '0' %}{{ lang['gbconfig']['message_inactive'] }}{% endif %}</td>
       <td width="10%" class="contentEntry1">
         <a href="?mod=extra-config&plugin=guestbook&action=edit_message&id={{ entry.id }}" />{{ lang['gbconfig']['message_edit'] }}</a>
       </td>

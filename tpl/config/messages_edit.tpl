@@ -32,7 +32,7 @@
         <td><label>{{ lang['gbconfig']['message_status'] }}</label></td>
         <td>
           <select name="status" class="bfstatus">
-            <option value="1" {% if status  == '1' %}selected{% endif %}>{{ lang['gbconfig']['message_active'] }}</option>
+            <option value="1" {% if status == '1' %}selected{% endif %}>{{ lang['gbconfig']['message_active'] }}</option>
             <option value="0" {% if status == '0' %}selected{% endif %}>{{ lang['gbconfig']['message_inactive'] }}</option>
           </select>
         </td>
