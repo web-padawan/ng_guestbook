@@ -4,7 +4,7 @@
 
 ID: guestbook
 Name: Гостевая книга
-Version: 1.3
+Version: 2.0
 Acts: index, twig, ppages
 File: guestbook.php
 Config: config.php
@@ -12,8 +12,8 @@ Install: install.php
 Deinstall: deinstall.php
 Type: plugin
 Description: Гостевая книга сайта
-Author: Styler
-Author_URI: http://ngcms.ru/forum/profile.php?id=7
+Author: Sergey Kulikov
+Author_URI: https://github.com/web-padawan
 Title: Гостевая книга
 Information: Плагин позволяет организовать на сайте гостевую книгу.
 Preinstall: default_no
