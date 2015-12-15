@@ -144,7 +144,8 @@ Instagram:
 - залогиниться в свой аккаунт
 - перейти по ссылке: https://instagram.com/developer/clients/manage/
 - нажать Register new client
-- указать название и описание (по желанию), адрес сайта
+- указать название и описание (по желанию), адрес сайта, Privacy policy URL, Contact Email
 - в поле Valid redirect URI указать: http://example.com/engine/plugins/guestbook/lib/hybridauth/?hauth.done=Instagram
 - в следующей строке этого же поля - продублировать вышеуказанную запись с www
 - получить и скопировать Client ID и Client Secret
+- для того, чтобы выйти из режима песочницы (Sandbox Mode) - нажать Permissions и отправить приложение на рассмотрение (Submit for review)
