@@ -386,6 +386,7 @@ function _guestbook_records($order, $start, $perpage) {
     }
 
     $comments[] = array(
+      'id'      => $row['id'],
       'date'    => LangDate($date_format, $row['postdate']),
       'message' => $row['message'],
       'answer'  => $row['answer'],
