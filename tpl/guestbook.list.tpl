@@ -34,23 +34,16 @@
         <div class="review-header">
           {% if comment.social %}
             {% if comment.social.Vkontakte.photo %}
-              {% set ava = comment.social.Vkontakte.photo %}
-              {% set link = comment.social.Vkontakte.link %}
+              {% set avatar = comment.social.Vkontakte.photo %}
             {% elseif comment.social.Facebook.photo %}
-              {% set ava = comment.social.Facebook.photo %}
-              {% set link = comment.social.Facebook.link %}
+              {% set avatar = comment.social.Facebook.photo %}
             {% elseif comment.social.Google.photo %}
-              {% set ava = comment.social.Google.photo %}
-              {% set link = comment.social.Google.link %}
+              {% set avatar = comment.social.Google.photo %}
             {% endif %}
           {% else %}
-            {% set ava = '/uploads/avatars/noavatar.gif' %}
+            {% set avatar = '/uploads/avatars/noavatar.gif' %}
           {% endif %}
-          <div class="person-photo">
-            {% if comment.social %}<a href="{{ link }}">{% endif %}
-            <img src="{{ ava }}" width="60" height="60">
-            {% if comment.social %}</a>{% endif %}
-          </div>
+          <div class="person-photo"><img src="{{ avatar }}" width="60" height="60"></div>
           <div class="person-name">{% if comment.author == 'guest' %} {{ comment.fields.firstname.value }} {{ comment.fields.lastname.value }}{% else %}{{ comment.author }}{% endif %}</div>
           <div class="review-date">{{ comment.date }}</div>
           <div class="review-subject">Ремонтировали - {{ comment.fields.item.value }}</div>
@@ -62,17 +55,17 @@
         <div class="review-social">
           <ul class="social-links social-links-default list-inline">
             {% if comment.social.Vkontakte %}
-              <li class="active"><a href="{{ link }}"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+              <li class="active"><a href="{{ comment.social.Vkontakte.link  }}"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></li>
             {% endif %}
             {% if comment.social.Google %}
-              <li class="active"><a href="{{ link }}"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+              <li class="active"><a href="{{ comment.social.Google.link  }}"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></li>
             {% endif %}
             {% if comment.social.Facebook %}
-              <li class="active"><a href="{{ link }}"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
+              <li class="active"><a href="{{ comment.social.Facebook.link  }}"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></li>
             {% endif %}
