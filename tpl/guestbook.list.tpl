@@ -177,15 +177,64 @@
 </form>
 <script>
   (function() {
+
+    function hasClass(element, cls) {
+      return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
+
     var fb = document.getElementById('fb'),
         vk = document.getElementById('vk'),
         gg = document.getElementById('gg'),
         ig = document.getElementById('ig');
 
-    fb.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400'); n.focus(); }
-    vk.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400'); n.focus(); }
-    gg.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400'); n.focus(); }
-    ig.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Instagram', 'Instagram', 'width=420,height=400'); n.focus(); }
+    fb.onclick = function(ev) {
+      ev.preventDefault();
+      var li = document.getElementById('Facebook_li');
+      if (hasClass(li, 'active')) {
+        li.className = '';
+        document.getElementById('Facebook_id').value = '';
+        return;
+      } else {
+        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400');
+        n.focus();
+      }
+    }
+    vk.onclick = function(ev) {
+      ev.preventDefault();
+      var li = document.getElementById('Vkontakte_li');
+      if (hasClass(li, 'active')) {
+        li.className = '';
+        document.getElementById('Vkontakte_id').value = '';
+        return;
+      } else {
+        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400');
+        n.focus();
+      }
+    }
+    gg.onclick = function(ev) {
+      ev.preventDefault();
+      var li = document.getElementById('Google_li');
+      if (hasClass(li, 'active')) {
+        li.className = '';
+        document.getElementById('Google_id').value = '';
+        return;
+      } else {
+        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400');
+        n.focus();
+      }
+    }
+    ig.onclick = function(ev) {
+      ev.preventDefault();
+      var li = document.getElementById('Instagram_li');
+      if (hasClass(li, 'active')) {
+        li.className = '';
+        document.getElementById('Instagram_id').value = '';
+        return;
+      } else {
+        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Instagram', 'Instagram', 'width=420,height=400');
+        n.focus();
+      }
+    }
   })();
 </script>
 {% endif %}
