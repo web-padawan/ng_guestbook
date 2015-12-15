@@ -195,7 +195,7 @@
         document.getElementById('Facebook_id').value = '';
         return;
       } else {
-        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400');
+        var n = window.open('{{ home }}/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400');
         n.focus();
       }
     }
@@ -207,7 +207,7 @@
         document.getElementById('Vkontakte_id').value = '';
         return;
       } else {
-        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400');
+        var n = window.open('{{ home }}/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400');
         n.focus();
       }
     }
@@ -219,7 +219,7 @@
         document.getElementById('Google_id').value = '';
         return;
       } else {
-        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400');
+        var n = window.open('{{ home }}/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400');
         n.focus();
       }
     }
@@ -231,7 +231,7 @@
         document.getElementById('Instagram_id').value = '';
         return;
       } else {
-        var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Instagram', 'Instagram', 'width=420,height=400');
+        var n = window.open('{{ home }}/plugin/guestbook/social/?provider=Instagram', 'Instagram', 'width=420,height=400');
         n.focus();
       }
     }
