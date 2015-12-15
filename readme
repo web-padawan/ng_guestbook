@@ -29,7 +29,7 @@
       * id          - id поля,
       * name        - название поля;
       * value       - значение поля;
-    * social        - массив с заполненными данными соцсетей (ключ - назвнаие соцсети: Vkontakte, Facebook, Google, Instagram)
+    * social        - массив с данными соцсетей (ключ - название: Vkontakte, Facebook, Google, Instagram)
       * link        - ссылка на профиль пользователя,
       * photo       - ссылка на аватар пользователя;
 
