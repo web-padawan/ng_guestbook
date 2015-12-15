@@ -47,4 +47,38 @@
       </tr>
     </table>
   </fieldset>
+  {% if social %}
+  <fieldset class="admGroup">
+    <legend class="title">{{ lang['gbconfig']['message_social_title'] }}</legend>
+    <table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
+      {% if social.Vkontakte %}
+      <tr class="contRow1">
+        <td><label>{{ lang['gbconfig']['message_vkontakte'] }}</label></td>
+        <td><a href="{{ social.Vkontakte.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a></td>
+        <td><a href="{{ social.Vkontakte.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a></td>
+      </tr>
+      {% endif %}
+      {% if social.Facebook %}
+      <tr class="contRow1">
+        <td><label>{{ lang['gbconfig']['message_facebook'] }}</label></td>
+        <td><a href="{{ social.Facebook.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a></td>
+        <td><a href="{{ social.Facebook.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a></td>
+      </tr>
+      {% endif %}
+      {% if social.Google %}
+      <tr class="contRow1">
+        <td><label>{{ lang['gbconfig']['message_google'] }}</label></td>
+        <td><a href="{{ social.Google.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a></td>
+        <td><a href="{{ social.Google.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a></td>
+      </tr>
+      {% endif %}
+      {% if social.Instagram %}
+      <tr class="contRow1">
+        <td><label>{{ lang['gbconfig']['message_instagram'] }}</label></td>
+        <td><a href="{{ social.Instagram.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a></td>
+        <td><a href="{{ social.Instagram.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a></td>
+      </tr>
+      {% endif %}
+    </table>
+  {% endif %}
 </form>

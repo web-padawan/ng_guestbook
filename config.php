@@ -415,7 +415,7 @@ function show_messages() {
 
 
 function edit_message() {
-global $tpl, $mysql, $lang, $twig;
+global $tpl, $mysql, $lang, $twig, $config;
 
   $tpath = locatePluginTemplates(array('config/main', 'config/messages_edit'), 'guestbook', 1);
 
@@ -479,6 +479,17 @@ global $tpl, $mysql, $lang, $twig;
       }
     }
 
+    // output social data
+    $social = unserialize($row['social']);
+    $profiles = array();
+    foreach ($social as $name => $sid) {
+      $img = $mysql->record("SELECT name, description FROM " . prefix . "_images WHERE id = {$sid}");
+      $profiles[$name] = array(
+        'photo' => $config['images_url'] . '/' . $img['name'],
+        'link'  => $img['description'],
+      );
+    }
+
     // output fields data
     $tFields = array();
     foreach ($fdata as $fnum => $frow) {
@@ -505,7 +516,8 @@ global $tpl, $mysql, $lang, $twig;
       'status'    => $row['ip'],
       'ip'        => $row['ip'],
       'postdate'  => $row['postdate'],
-      'fields'    => $tFields
+      'fields'    => $tFields,
+      'social'    => $profiles
     );
 
   } else {
@@ -522,7 +534,8 @@ global $tpl, $mysql, $lang, $twig;
     'status'    => $row['status'],
     'ip'        => $row['ip'],
     'postdate'  => $row['postdate'],
-    'fields'    => $tFields
+    'fields'    => $tFields,
+    'social'    => $profiles
   );
 
   $xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
