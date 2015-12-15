@@ -261,7 +261,7 @@ function guestbook_list($params = array()) {
 
   // ADD notication
   if ((isset($params['act']) && $params['act'] == 'add') || (isset($_REQUEST['add']) && $_REQUEST['add'])) {
-    $success_add[] = $lang['guestbook']['success_add_wo_approve'];
+    $success_add[] = (pluginGetVariable('guestbook','approve_msg')) ? $lang['guestbook']['success_add_wo_approve'] : $lang['guestbook']['success_add'];
   }
 
   // EDIT notication
