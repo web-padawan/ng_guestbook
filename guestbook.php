@@ -477,7 +477,7 @@ function guestbook_social() {
 
   session_start();
 
-  $providers = array('Vkontakte', 'Facebook', 'Google');
+  $providers = array('Vkontakte', 'Facebook', 'Google', 'Instagram');
 
   $auth_config = array(
     "base_url" => home . "/engine/plugins/guestbook/lib/hybridauth/",
@@ -499,7 +499,11 @@ function guestbook_social() {
         "scope"           => "https://www.googleapis.com/auth/userinfo.profile",
         "display"         => "popup",
         "approval_prompt" => "force"
-      )
+      ),
+      "Instagram" => array(
+        "enabled"   => true,
+        "keys"      => array("id" => pluginGetVariable('guestbook', 'instagram_client_id'), "secret" => pluginGetVariable('guestbook', 'instagram_client_secret')),
+      ),
     )
   );
 

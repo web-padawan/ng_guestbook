@@ -37,6 +37,8 @@
               {% set avatar = comment.social.Vkontakte.photo %}
             {% elseif comment.social.Facebook.photo %}
               {% set avatar = comment.social.Facebook.photo %}
+            {% elseif comment.social.Instagram.photo %}
+              {% set avatar = comment.social.Instagram.photo %}
             {% elseif comment.social.Google.photo %}
               {% set avatar = comment.social.Google.photo %}
             {% endif %}
@@ -75,7 +77,11 @@
             {% else %}
               <li><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></li>
             {% endif %}
-            <!-- <li><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></li> -->
+            {% if comment.social.Instagram %}
+              <li class="active"><a href="{{ comment.social.Instagram.link }}"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
+            {% else %}
+              <li><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></li>
+            {% endif %}
           </ul>
         </div>
       </div>

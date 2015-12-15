@@ -591,6 +591,9 @@ function social_config() {
     pluginSetVariable('guestbook', 'google_client_id', secure_html($_REQUEST['google_client_id']));
     pluginSetVariable('guestbook', 'google_client_secret', secure_html($_REQUEST['google_client_secret']));
 
+    pluginSetVariable('guestbook', 'instagram_client_id', secure_html($_REQUEST['instagram_client_id']));
+    pluginSetVariable('guestbook', 'instagram_client_secret', secure_html($_REQUEST['instagram_client_secret']));
+
     pluginsSaveConfig();
     msg(array("text" => $lang['gbconfig']['msgo_settings_saved']));
   }
@@ -604,6 +607,9 @@ function social_config() {
   $google_client_id = pluginGetVariable('guestbook', 'google_client_id');
   $google_client_secret = pluginGetVariable('guestbook', 'google_client_secret');
 
+  $instagram_client_id = pluginGetVariable('guestbook', 'instagram_client_id');
+  $instagram_client_secret = pluginGetVariable('guestbook', 'instagram_client_secret');
+
   $xt = $twig->loadTemplate($tpath['config/social'] . 'config/social.tpl');
 
   $tVars = array(
@@ -615,7 +621,9 @@ function social_config() {
     'facebook_client_id'      => $facebook_client_id,
     'facebook_client_secret'  => $facebook_client_secret,
     'google_client_id'        => $google_client_id,
-    'google_client_secret'    => $google_client_secret
+    'google_client_secret'    => $google_client_secret,
+    'instagram_client_id'     => $instagram_client_id,
+    'instagram_client_secret' => $instagram_client_secret
   );
 
   $xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
