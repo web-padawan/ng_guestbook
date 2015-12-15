@@ -71,6 +71,7 @@ function plugin_guestbook_install($action) {
         'req_fields' => 'content,author',
         'approve_msg' => 1,
         'admin_count' => 5,
+        'url' => 0
       );
       foreach ($params as $k => $v) {
         extra_set_param('guestbook', $k, $v);

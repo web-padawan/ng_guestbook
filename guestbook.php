@@ -238,7 +238,7 @@ function msg_delete_submit() {
  * List messages page
  */
 function guestbook_list() {
-  global $template, $tpl, $twig, $userROW, $ip, $config, $mysql, $SYSTEM_FLAGS, $TemplateCache, $lang;
+  global $template, $tpl, $twig, $userROW, $ip, $config, $mysql, $SYSTEM_FLAGS, $TemplateCache, $CurrentHandler, $lang;
 
   $SYSTEM_FLAGS['info']['title']['group'] = $lang['guestbook']['title'];
 
@@ -268,8 +268,8 @@ function guestbook_list() {
     $perpage = 10;
   }
 
-  $page = isset($params['page']) ? intval($params['page']) : intval($_REQUEST['page']);
-  $page = isset($page) ? $page : 0;
+  $page = intval(isset($CurrentHandler['params']['page']) ? $CurrentHandler['params']['page'] : (isset($_REQUEST['page']) ? $_REQUEST['page'] : 0));
+
   if ($page < 1)  $page = 1;
   if (!$start)  $start = ($page - 1) * $perpage;
 

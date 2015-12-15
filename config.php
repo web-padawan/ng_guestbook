@@ -256,8 +256,34 @@ function show_options() {
     pluginSetVariable('guestbook', 'date',  secure_html($_REQUEST['date']));
     pluginSetVariable('guestbook', 'send_email',  secure_html($_REQUEST['send_email']));
     pluginSetVariable('guestbook', 'approve_msg',  secure_html($_REQUEST['approve_msg']));
-
     pluginSetVariable('guestbook', 'admin_count', intval($_REQUEST['admin_count']));
+
+    if(isset($_REQUEST['url']) && intval($_REQUEST['url']) == 1) {
+      $ULIB = new urlLibrary();
+      $ULIB->loadConfig();
+      $ULIB->registerCommand('guestbook', '',
+        array(
+          'vars'  => array(
+            'page' =>
+            array(
+              'matchRegex' => '\\d{1,4}',
+              'descr' =>
+              array (
+                'russian' => 'Страница',
+              ),
+            ),
+          ),
+          'descr' => array('russian' => 'Гостевая книга'),
+        )
+      );
+      $ULIB->saveConfig();
+    } else {
+      $ULIB = new urlLibrary();
+      $ULIB->loadConfig();
+      $ULIB->removeCommand('guestbook', '');
+      $ULIB->saveConfig();
+    }
+    pluginSetVariable('guestbook', 'url', intval($_REQUEST['url']));
 
     pluginsSaveConfig();
     msg(array("text" => $lang['gbconfig']['msgo_settings_saved']));
@@ -277,6 +303,7 @@ function show_options() {
   $send_email   = pluginGetVariable('guestbook', 'send_email');
   $approve_msg  = pluginGetVariable('guestbook', 'approve_msg');
   $admin_count  = pluginGetVariable('guestbook', 'admin_count');
+  $url          = pluginGetVariable('guestbook', 'url');
 
   $xt = $twig->loadTemplate($tpath['config/settings'].'config/settings.tpl');
 
@@ -294,6 +321,7 @@ function show_options() {
     'private_key' => $private_key,
     'perpage' => $perpage,
     'order' => $order,
+    'url' => $url,
     'date' => $date,
     'send_email' => $send_email,
     'approve_msg' => $approve_msg,

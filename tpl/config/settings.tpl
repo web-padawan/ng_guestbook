@@ -45,6 +45,15 @@
         <td class="contentEntry1" valign="top">{{ lang['gbconfig']['settings_date'] }}</td>
         <td class="contentEntry2" valign="top"><input name="date" type="text" size="10" value="{{ date }}" /></td>
       </tr>
+      <tr>
+        <td class="contentEntry1" valign="top">{{ lang['gbconfig']['settings_url'] }}</td>
+        <td class="contentEntry2" valign="top">
+          <select name="url">
+            <option value="0" {% if url == '0' %}selected{% endif %}>{{ lang['gbconfig']['settings_no'] }}</option>
+            <option value="1" {% if url == '1' %}selected{% endif %}>{{ lang['gbconfig']['settings_yes'] }}</option>
+          </select>
+        </td>
+      </tr>
     </table>
   </fieldset>
 

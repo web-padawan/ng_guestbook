@@ -81,7 +81,7 @@
 
 {% if (total_count > perpage) %}
   <ul class="pagination">
-    {pages}
+    {{ pages }}
   </ul>
 {% endif %}
 
