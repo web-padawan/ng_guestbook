@@ -123,6 +123,9 @@ function msg_add_submit() {
     if (strlen(trim($_POST['Google_id']))) {
       $social['Google'] = $_POST['Google_id'];
     }
+    if (strlen(trim($_POST['Instagram_id']))) {
+      $social['Instagram'] = $_POST['Instagram_id'];
+    }
     $new_rec['social'] = db_squote(serialize($social));
 
     if (!count($errors)) {
