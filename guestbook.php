@@ -470,7 +470,24 @@ function guestbook_edit() {
 
     $template['vars']['mainblock'] = $xt->render($tVars);
   }
+}
 
+/*
+ * Block display callback
+ */
+function guestbook_block($params) {
+  global $CurrentHandler, $twig, $config;
+
+  $count  = ($params['count'] > 0) ? intval($params['count']) : 10;
+
+  $tVars = array(
+    'entries'    => _guestbook_records('DESC', 0, $count),
+  );
+
+  $tpath = locatePluginTemplates(array('guestbook.block'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
+  $xt = $twig->loadTemplate($tpath['guestbook.block'] . 'guestbook.block.tpl');
+
+  return $xt->render($tVars);
 }
 
 function guestbook_social() {
@@ -596,5 +613,7 @@ function addToFiles($key, $url) {
 
   //return $_FILES[$key];
 }
+
+twigRegisterFunction('guestbook', 'show', guestbook_block );
 
 ?>

@@ -5,7 +5,7 @@
 ID: guestbook
 Name: Гостевая книга
 Version: 1.3
-Acts: ppages
+Acts: index, twig, ppages
 File: guestbook.php
 Config: config.php
 Install: install.php

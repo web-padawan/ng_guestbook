@@ -63,17 +63,17 @@
         <div class="review-social">
           <ul class="social-links social-links-default list-inline">
             {% if comment.social.Vkontakte %}
-              <li class="active"><a href="{{ comment.social.Vkontakte.link  }}"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
+              <li class="active"><a href="{{ comment.social.Vkontakte.link }}"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></li>
             {% endif %}
             {% if comment.social.Google %}
-              <li class="active"><a href="{{ comment.social.Google.link  }}"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
+              <li class="active"><a href="{{ comment.social.Google.link }}"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></li>
             {% endif %}
             {% if comment.social.Facebook %}
-              <li class="active"><a href="{{ comment.social.Facebook.link  }}"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
+              <li class="active"><a href="{{ comment.social.Facebook.link }}"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
             {% else %}
               <li><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></li>
             {% endif %}
