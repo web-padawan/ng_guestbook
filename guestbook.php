@@ -525,7 +525,7 @@ function guestbook_social() {
     // print_r($user_profile);
     // exit;
 
-    $profile = $user_profile->profileURL;
+    $profile = ($provider == 'Instagram') ? 'https://www.instagram.com/' . $user_profile->username : $user_profile->profileURL;
     $photo = $user_profile->photoURL;
 
     if (!empty($photo)) {
