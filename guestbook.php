@@ -334,7 +334,8 @@ function _guestbook_records($order, $start, $perpage) {
     if (pluginGetVariable('guestbook','usmilies')) { $row['message'] = $parse -> smilies($row['message']); }
     if (pluginGetVariable('guestbook','ubbcodes'))  { $row['message'] = $parse -> bbcodes($row['message']); }
 
-    $editlink = generateLink('core', 'plugin', array('plugin' => 'guestbook', 'handler' => 'edit'), array('id' => $row['id']));
+    // $editlink = generateLink('core', 'plugin', array('plugin' => 'guestbook', 'handler' => 'edit'), array('id' => $row['id']));
+    $editlink = generatePluginLink('guestbook', 'edit', array('id' => $row['id']), array());
     $dellink = generateLink('core', 'plugin', array('plugin' => 'guestbook'), array('action' => 'delete', 'id' => $row['id']));
     $comnum++;
 
@@ -393,9 +394,9 @@ function _guestbook_records($order, $start, $perpage) {
  * Edit message page
  */
 function guestbook_edit() {
-  global $template, $tpl, $userROW, $ip, $config, $mysql, $twig, $lang;
+  global $template, $tpl, $userROW, $ip, $config, $mysql, $twig, $lang, $CurrentHandler;
 
-  $id = secure_html(convert(trim($_REQUEST['id'])));
+  $id = intval(isset($CurrentHandler['params']['id']) ? $CurrentHandler['params']['id'] : (isset($_REQUEST['id']) ?  secure_html(convert(trim($_REQUEST['id']))) : ''));
 
   $tpath = locatePluginTemplates(array('guestbook.edit'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
   $xt = $twig->loadTemplate($tpath['guestbook.edit'] . 'guestbook.edit.tpl');

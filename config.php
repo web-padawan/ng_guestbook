@@ -276,6 +276,21 @@ function show_options() {
           'descr' => array('russian' => 'Гостевая книга'),
         )
       );
+      $ULIB->registerCommand('guestbook', 'edit',
+        array(
+          'vars'  => array(
+            'id' =>
+            array(
+              'matchRegex' => '\\d+',
+              'descr' =>
+              array (
+                'russian' => 'ID записи',
+              ),
+            ),
+          ),
+          'descr' => array('russian' => 'Редактирование'),
+        )
+      );
       $ULIB->saveConfig();
     } else {
       $ULIB = new urlLibrary();
