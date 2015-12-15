@@ -272,6 +272,14 @@ function show_options() {
                 'russian' => 'Страница',
               ),
             ),
+            'act' =>
+            array(
+              'matchRegex' => '.+?',
+              'descr' =>
+              array (
+                'russian' => 'action',
+              ),
+            ),
           ),
           'descr' => array('russian' => 'Гостевая книга'),
         )
@@ -296,6 +304,7 @@ function show_options() {
       $ULIB = new urlLibrary();
       $ULIB->loadConfig();
       $ULIB->removeCommand('guestbook', '');
+      $ULIB->removeCommand('guestbook', 'edit');
       $ULIB->saveConfig();
     }
     pluginSetVariable('guestbook', 'url', intval($_REQUEST['url']));

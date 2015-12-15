@@ -154,7 +154,10 @@ function msg_add_submit() {
       foreach ( $send_email_array as $email ) {
         sendEmailMessage($email, $mailSubject, $mailBody, $filename = false, $mail_from = false, $ctype = 'text/html');
       }
-      @header("Location: " . generatePluginLink('guestbook', null, array(), array('addSuccessful' => 1)));
+      $url = checkLinkAvailable('guestbook', '') ?
+        generatePluginLink('guestbook', '', array('act' => 'add'), array()) :
+        generateLink('core', 'plugin', array('plugin' => 'guestbook'), array('add' => 1));
+      @header("Location: " . $url);
     }
 
 }
@@ -210,12 +213,16 @@ function msg_edit_submit() {
 
   if (!count($errors)) {
     $mysql->query('UPDATE ' . prefix . '_guestbook SET ' . $upd_str . ' WHERE id = \'' . intval($id) . '\' ');
-    @header("Location: " . generatePluginLink('guestbook', null, array(), array('editSuccessful' => 1)));
+    $url = checkLinkAvailable('guestbook', '') ?
+      generatePluginLink('guestbook', '', array('act' => 'upd'), array()) :
+      generatePluginLink('core', 'plugin', array('plugin' => 'guestbook'), array('upd' => 1));
   }
   else {
-    @header("Location: " . generatePluginLink('guestbook', 'edit', array(), array('id' => $id, 'error' => 1)));
-    exit;
+    $url = checkLinkAvailable('guestbook', 'edit') ?
+      generatePluginLink('guestbook', 'edit', array('id' => $id), array('error' => 1)) :
+      generateLink('core', 'plugin', array('plugin' => 'guestbook', 'handler' => 'edit'), array('id' => $id, 'error' => 1));
   }
+  @header("Location: " . $url);
 }
 
 /*
@@ -230,14 +237,17 @@ function msg_delete_submit() {
       return;
     }
     $mysql->query("DELETE FROM " . prefix . "_guestbook WHERE id = " . intval($_REQUEST['id']));
-    @header("Location: " . generatePluginLink('guestbook', null, array(), array('deleteSuccessful' => 1)));
+    $url = checkLinkAvailable('guestbook', '') ?
+      generatePluginLink('guestbook', '', array('act' => 'del'), array()) :
+      generateLink('core', 'plugin', array('plugin' => 'guestbook'), array('del' => 1));
+    @header("Location: " . $url);
   }
 }
 
 /*
  * List messages page
  */
-function guestbook_list() {
+function guestbook_list($params = array()) {
   global $template, $tpl, $twig, $userROW, $ip, $config, $mysql, $SYSTEM_FLAGS, $TemplateCache, $CurrentHandler, $lang;
 
   $SYSTEM_FLAGS['info']['title']['group'] = $lang['guestbook']['title'];
@@ -247,17 +257,17 @@ function guestbook_list() {
   $privatekey = pluginGetVariable('guestbook','private_key');
 
   // ADD notication
-  if (isset($_REQUEST['addSuccessful']) && $_REQUEST['addSuccessful']) {
+  if ((isset($params['act']) && $params['act'] == 'add') || (isset($_REQUEST['add']) && $_REQUEST['add'])) {
     $success_add[] = $lang['guestbook']['success_add_wo_approve'];
   }
 
   // EDIT notication
-  if (isset($_REQUEST['editSuccessful']) && $_REQUEST['editSuccessful']) {
+  if ((isset($params['act']) && $params['act'] == 'upd') || (isset($_REQUEST['upd']) && $_REQUEST['upd'])) {
     $success_add[] = $lang['guestbook']['success_edit'];
   }
 
   // DELETE notication
-  if (isset($_REQUEST['deleteSuccessful']) && $_REQUEST['deleteSuccessful']) {
+  if ((isset($params['act']) && $params['act'] == 'del') || (isset($_REQUEST['del']) && $_REQUEST['del'])) {
     $success_add[] = $lang['guestbook']['success_delete'];
   }
 
@@ -334,8 +344,10 @@ function _guestbook_records($order, $start, $perpage) {
     if (pluginGetVariable('guestbook','usmilies')) { $row['message'] = $parse -> smilies($row['message']); }
     if (pluginGetVariable('guestbook','ubbcodes'))  { $row['message'] = $parse -> bbcodes($row['message']); }
 
-    // $editlink = generateLink('core', 'plugin', array('plugin' => 'guestbook', 'handler' => 'edit'), array('id' => $row['id']));
-    $editlink = generatePluginLink('guestbook', 'edit', array('id' => $row['id']), array());
+    $editlink = checkLinkAvailable('guestbook', 'edit') ?
+      generatePluginLink('guestbook', 'edit', array('id' => $row['id']), array()) :
+      generateLink('core', 'plugin', array('plugin' => 'guestbook', 'handler' => 'edit'), array('id' => $row['id']));
+
     $dellink = generateLink('core', 'plugin', array('plugin' => 'guestbook'), array('action' => 'delete', 'id' => $row['id']));
     $comnum++;
 
