@@ -158,7 +158,7 @@
         <li id="Vkontakte_li"><a id="vk" href="#"><svg class="icon icon-vk"><use xlink:href="#icon-vk"></use></svg></a></li>
         <li id="Google_li"><a id="gg" href="#"><svg class="icon icon-google"><use xlink:href="#icon-google"></use></svg></a></li>
         <li id="Facebook_li"><a id="fb" href="#"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>
-        <li><a href="#"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
+        <li id="Instagram_li"><a id="ig" href="#"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>
       </ul>
     </div>
 
@@ -172,17 +172,20 @@
     <input type="hidden" name="Vkontakte_id" id="Vkontakte_id" value="" />
     <input type="hidden" name="Facebook_id" id="Facebook_id" value="" />
     <input type="hidden" name="Google_id" id="Google_id" value="" />
+    <input type="hidden" name="Instagram_id" id="Instagram_id" value="" />
   </fieldset>
 </form>
 <script>
   (function() {
     var fb = document.getElementById('fb'),
         vk = document.getElementById('vk'),
-        gg = document.getElementById('gg');
+        gg = document.getElementById('gg'),
+        ig = document.getElementById('ig');
 
     fb.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Facebook', 'FB', 'width=420,height=400'); n.focus(); }
     vk.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Vkontakte', 'VK', 'width=420,height=400'); n.focus(); }
     gg.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Google', 'Google', 'width=420,height=400'); n.focus(); }
+    ig.onclick = function(ev) {ev.preventDefault(); var n = window.open('http://web-padavan.pp.ua/plugin/guestbook/social/?provider=Instagram', 'Instagram', 'width=420,height=400'); n.focus(); }
   })();
 </script>
 {% endif %}
