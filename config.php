@@ -433,17 +433,18 @@ function delete_social() {
     return $id;
   }
 
-  $entry = $mysql->select("SELECT social FROM " . prefix . "_guestbook WHERE id = " . db_squote($id));
+  $entry = $mysql->record("SELECT social FROM " . prefix . "_guestbook WHERE id = " . db_squote($id));
 
   $social = unserialize($entry['social']);
 
-  if (($key = array_search($soc, $social) !== FALSE)) {
-    unset($social[$soc]);
+  $new_social = array();
+  foreach ($social as $k => $v) {
+    if ($k != $soc) {
+      $new_social[$k] = $v;
+    }
   }
 
-  $new_social = serialize($social);
-
-  $mysql->query("UPDATE " . prefix . "_guestbook set social = " . db_squote($new_social) . " WHERE id = " . db_squote($id));
+  $mysql->query("UPDATE " . prefix . "_guestbook set social = " . db_squote(serialize($new_social)) . " WHERE id = " . db_squote($id));
 
   msg(array("text" => $lang['gbconfig']['msgo_social_deleted']));
   return $id;
