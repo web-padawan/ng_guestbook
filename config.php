@@ -27,6 +27,8 @@ switch ($_REQUEST['action']) {
                           break;
   case 'delete_message' : delete_message(); show_messages();
                           break;
+  case 'delete_social'  : delete_social();
+                          break;
   case 'modify'         : modify(); show_messages();
                           break;
   case 'social'         : social_config();
@@ -415,9 +417,23 @@ function show_messages() {
   print $xg->render($tVars);
 }
 
+function delete_social() {
+  global $mysql, $lang;
+
+  $id  = intval($_REQUEST['id']);
+  $sid = intval($_REQUEST['sid']);
+
+  if (!is_array($mysql->record("SELECT id FROM " . prefix . "_images WHERE id=" . db_squote($sid)))) {
+    return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
+  }
+
+  $mysql->query("DELETE FROM " . prefix . "_images WHERE id = " . $sid);
+
+  return msg(array("text" => $lang['gbconfig']['msgo_social_deleted']));
+}
 
 function delete_message() {
-  global $tpl, $mysql, $lang, $twig, $config;
+  global $mysql, $lang;
 
   $id = intval($_REQUEST['id']);
 
@@ -431,7 +447,7 @@ function delete_message() {
 }
 
 function edit_message() {
-global $tpl, $mysql, $lang, $twig, $config;
+  global $tpl, $mysql, $lang, $twig, $config;
 
   $tpath = locatePluginTemplates(array('config/main', 'config/messages_edit'), 'guestbook', 1);
 
