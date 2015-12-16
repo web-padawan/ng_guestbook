@@ -63,7 +63,7 @@
         <td class="contentEntry2">
           <a href="{{ social.Vkontakte.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a>
           <a href="{{ social.Vkontakte.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a>
-          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Vkontakte.sid }}">
+          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Vkontakte.sid }}&soc=Vkontakte">
             {{ lang['gbconfig']['message_social_delete'] }}
           </a>
         </td>
@@ -75,7 +75,7 @@
         <td class="contentEntry2">
           <a href="{{ social.Facebook.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a>
           <a href="{{ social.Facebook.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a>
-          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Facebook.sid }}">
+          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Facebook.sid }}&soc=Facebook">
             {{ lang['gbconfig']['message_social_delete'] }}
           </a>
         </td>
@@ -87,7 +87,7 @@
         <td class="contentEntry2">
           <a href="{{ social.Google.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a>
           <a href="{{ social.Google.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a>
-          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Google.sid }}">
+          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Google.sid }}&soc=Google">
             {{ lang['gbconfig']['message_social_delete'] }}
           </a>
         </td>
@@ -99,7 +99,7 @@
         <td class="contentEntry2">
           <a href="{{ social.Instagram.link }}">{{ lang['gbconfig']['message_social_profile'] }}</a>
           <a href="{{ social.Instagram.photo }}">{{ lang['gbconfig']['message_social_avatar'] }}</a>
-          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Instagram.sid }}">
+          <a onclick="return confirm('{{ lang['gbconfig']['message_social_confirm'] }}');" href="{{ php_self }}?mod=extra-config&plugin=guestbook&action=delete_social&id={{ id }}&sid={{ social.Instagram.sid }}&soc=Instagram">
             {{ lang['gbconfig']['message_social_delete'] }}
           </a>
         </td>

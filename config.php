@@ -422,12 +422,29 @@ function delete_social() {
 
   $id  = intval($_REQUEST['id']);
   $sid = intval($_REQUEST['sid']);
+  $soc = secure_html($_REQUEST['soc']);
+
+  if (!in_array($soc, array('Vkontakte', 'Facebook', 'Google', 'Instagram')) {
+    return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
+  }
 
   if (!is_array($mysql->record("SELECT id FROM " . prefix . "_images WHERE id=" . db_squote($sid)))) {
     return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
   }
 
   $mysql->query("DELETE FROM " . prefix . "_images WHERE id = " . $sid);
+
+  $entry = $mysql->select("SELECT social FROM " . prefix . "_guestbook WHERE id = " . db_squote($id));
+
+  $social = unserialize($entry['social']);
+
+  if (($key = array_search($soc, $social) !== FALSE) {
+    unset($social[$soc]);
+  }
+
+  $new_social = serialize($social);
+
+  $mysql->query("UPDATE " . prefix . "_guestbook set social = " . db_squote($new_social) . " WHERE id = " . db_squote($id));
 
   return msg(array("text" => $lang['gbconfig']['msgo_social_deleted']));
 }
