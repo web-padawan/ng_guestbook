@@ -27,7 +27,7 @@ switch ($_REQUEST['action']) {
                           break;
   case 'delete_message' : delete_message(); show_messages();
                           break;
-  case 'delete_social'  : delete_social();
+  case 'delete_social'  : $result = delete_social(); edit_message($result);
                           break;
   case 'modify'         : modify(); show_messages();
                           break;
@@ -424,11 +424,13 @@ function delete_social() {
   $soc = secure_html($_REQUEST['soc']);
 
   if (!in_array($soc, array('Vkontakte', 'Facebook', 'Google', 'Instagram'))) {
-    return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
+    msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
+    return $id;
   }
 
   if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote($id)))) {
-    return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
+    msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
+    return $id;
   }
 
   $entry = $mysql->select("SELECT social FROM " . prefix . "_guestbook WHERE id = " . db_squote($id));
@@ -443,7 +445,8 @@ function delete_social() {
 
   $mysql->query("UPDATE " . prefix . "_guestbook set social = " . db_squote($new_social) . " WHERE id = " . db_squote($id));
 
-  return msg(array("text" => $lang['gbconfig']['msgo_social_deleted']));
+  msg(array("text" => $lang['gbconfig']['msgo_social_deleted']));
+  return $id;
 }
 
 function delete_message() {
@@ -460,12 +463,14 @@ function delete_message() {
   return msg(array("text" => $lang['gbconfig']['msgo_deleted_one']));
 }
 
-function edit_message() {
+function edit_message($mid) {
   global $tpl, $mysql, $lang, $twig, $config;
 
   $tpath = locatePluginTemplates(array('config/main', 'config/messages_edit'), 'guestbook', 1);
 
-  $id = intval($_REQUEST['id']);
+  if (!empty($mid) || isset($_REQUEST['id'])) {
+    $id = (isset($mid)) ? intval($mid) : intval($_REQUEST['id']);
+  }
 
   // get fields
   $fdata = $mysql->select("SELECT * FROM " . prefix . "_guestbook_fields");
