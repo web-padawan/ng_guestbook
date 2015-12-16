@@ -421,18 +421,15 @@ function delete_social() {
   global $mysql, $lang;
 
   $id  = intval($_REQUEST['id']);
-  $sid = intval($_REQUEST['sid']);
   $soc = secure_html($_REQUEST['soc']);
 
   if (!in_array($soc, array('Vkontakte', 'Facebook', 'Google', 'Instagram'))) {
     return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
   }
 
-  if (!is_array($mysql->record("SELECT id FROM " . prefix . "_images WHERE id=" . db_squote($sid)))) {
+  if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote($id)))) {
     return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
   }
-
-  $mysql->query("DELETE FROM " . prefix . "_images WHERE id = " . $sid);
 
   $entry = $mysql->select("SELECT social FROM " . prefix . "_guestbook WHERE id = " . db_squote($id));
 
@@ -534,7 +531,6 @@ function edit_message() {
     foreach ($social as $name => $sid) {
       $img = $mysql->record("SELECT name, description FROM " . prefix . "_images WHERE id = {$sid}");
       $profiles[$name] = array(
-        'sid'   => $sid,
         'photo' => $config['images_url'] . '/' . $img['name'],
         'link'  => $img['description'],
       );
