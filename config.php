@@ -501,6 +501,7 @@ global $tpl, $mysql, $lang, $twig, $config;
     foreach ($social as $name => $sid) {
       $img = $mysql->record("SELECT name, description FROM " . prefix . "_images WHERE id = {$sid}");
       $profiles[$name] = array(
+        'sid'   => $sid,
         'photo' => $config['images_url'] . '/' . $img['name'],
         'link'  => $img['description'],
       );
