@@ -499,6 +499,10 @@ function edit_message($mid) {
         'status'  => db_squote($status)
       );
 
+      if (preg_match('#^(\d+)\.(\d+)\.(\d+) +(\d+)\:(\d+)$#', $_REQUEST['cdate'], $m)) {
+        $upd_rec['postdate'] = mktime($m[4], $m[5], 0, $m[2], $m[1], $m[3]) + ($config['date_adjust'] * 60);
+      }
+
       foreach ($fdata as $fnum => $frow) {
         if (!empty($_REQUEST[$frow['id']])) {
           $upd_rec[$frow['id']] = db_squote($_REQUEST[$frow['id']]);

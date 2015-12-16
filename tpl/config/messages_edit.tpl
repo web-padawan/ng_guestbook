@@ -7,7 +7,7 @@
     <table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
       <tr class="contRow1">
         <td><label>{{ lang['gbconfig']['message_date'] }}</label></td>
-        <td>{{ postdate|date("j.m.Y H:i") }}</td>
+        <td><input type="text" id="cdate" name="cdate" value="{{ postdate|date('j.m.Y H:i') }}"/></td>
       </tr>
       <tr class="contRow1">
         <td><label>{{ lang['gbconfig']['message_ip'] }}</label></td>
@@ -108,3 +108,6 @@
     </table>
   {% endif %}
 </form>
+<script type="text/javascript">
+  $("#cdate").datetimepicker( { currentText: "DD.MM.YYYY HH:MM" });
+</script>
