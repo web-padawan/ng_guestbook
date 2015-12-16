@@ -25,6 +25,8 @@ switch ($_REQUEST['action']) {
                           break;
   case 'edit_message'   : $result = edit_message(); if ($result === TRUE) show_messages();
                           break;
+  case 'delete_message' : delete_message(); show_messages();
+                          break;
   case 'modify'         : modify(); show_messages();
                           break;
   case 'social'         : social_config();
@@ -413,6 +415,20 @@ function show_messages() {
   print $xg->render($tVars);
 }
 
+
+function delete_message() {
+  global $tpl, $mysql, $lang, $twig, $config;
+
+  $id = intval($_REQUEST['id']);
+
+  if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote($id)))) {
+    return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
+  }
+
+  $mysql->query("DELETE FROM " . prefix . "_guestbook WHERE id = " . $id);
+
+  return msg(array("text" => $lang['gbconfig']['msgo_deleted_one']));
+}
 
 function edit_message() {
 global $tpl, $mysql, $lang, $twig, $config;
