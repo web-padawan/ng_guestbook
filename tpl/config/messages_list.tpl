@@ -26,7 +26,7 @@
         </a>
       </td>
       <td nowrap style="text-align: center;">
-        <a href="?mod=extra-config&plugin=guestbook&action=delete_message&id={{ entry.id }}" title="{{ lang['gbconfig']['message_delete'] }}">
+        <a onclick="return confirm('{{ lang['gbconfig']['message_confirm'] }}');" href="?mod=extra-config&plugin=guestbook&action=delete_message&id={{ entry.id }}" title="{{ lang['gbconfig']['message_delete'] }}">
           <img src="{{ skins_url }}/images/delete.gif" alt="DEL" width="12" height="12" />
         </a>
       </td>

@@ -520,30 +520,17 @@ global $tpl, $mysql, $lang, $twig, $config;
       $tFields[] = $tField;
     }
 
-    $xt = $twig->loadTemplate($tpath['config/messages_edit'] . 'config/messages_edit.tpl');
-
-    $tVars = array(
-      'skins_url' => skins_url,
-      'home'      => home,
-      'tpl_home'  => admin_url,
-      'message'   => $row['message'],
-      'answer'    => $row['answer'],
-      'author'    => $row['author'],
-      'status'    => $row['ip'],
-      'ip'        => $row['ip'],
-      'postdate'  => $row['postdate'],
-      'fields'    => $tFields,
-      'social'    => $profiles
-    );
-
   } else {
     msg(array("type" => "error", "text" => "Не передан id"));
   }
+
+  $xt = $twig->loadTemplate($tpath['config/messages_edit'] . 'config/messages_edit.tpl');
 
   $tVars = array(
     'skins_url' => skins_url,
     'home'      => home,
     'tpl_home'  => admin_url,
+    'id'        => $id,
     'message'   => $row['message'],
     'answer'    => $row['answer'],
     'author'    => $row['author'],

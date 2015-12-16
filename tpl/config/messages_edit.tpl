@@ -1,3 +1,6 @@
+<style>
+  .btn-link { margin-left: 3px; vertical-align: middle; text-decoration: none; }
+</style>
 <form method="post" action="" name="form">
   <fieldset class="admGroup">
     <legend class="title">{{ lang['gbconfig']['message_edit_title'] }} {{ field.name }}</legend>
@@ -42,6 +45,9 @@
           <span class="right_s">
             <input type="reset" class="button" value="{{ lang['gbconfig']['message_reset'] }}" />&nbsp;
             <input name="submit" type="submit" class="button" value="{{ lang['gbconfig']['message_submit'] }}"/>
+            <a onclick="return confirm('{{ lang['gbconfig']['message_confirm'] }}');" class="button btn-link" href="?mod=extra-config&plugin=guestbook&action=delete_message&id={{ id }}">
+              <span>{{ lang['gbconfig']['message_delete'] }}</span>
+            </a>
           </span>
         </td>
       </tr>
