@@ -424,7 +424,7 @@ function delete_social() {
   $sid = intval($_REQUEST['sid']);
   $soc = secure_html($_REQUEST['soc']);
 
-  if (!in_array($soc, array('Vkontakte', 'Facebook', 'Google', 'Instagram')) {
+  if (!in_array($soc, array('Vkontakte', 'Facebook', 'Google', 'Instagram'))) {
     return msg(array("type" => "error", "text" => $lang['gbconfig']['msge_wrong_action']));
   }
 
