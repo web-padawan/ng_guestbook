@@ -438,7 +438,7 @@ function delete_social() {
 
   $social = unserialize($entry['social']);
 
-  if (($key = array_search($soc, $social) !== FALSE) {
+  if (($key = array_search($soc, $social) !== FALSE)) {
     unset($social[$soc]);
   }
 
